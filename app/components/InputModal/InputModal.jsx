@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
-const InputModal = () => {
-  const [open, setOpen] = useState(false);
+import { useRouter } from "next/navigation";
+const InputModal = ({ modalOpen }) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(modalOpen);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState("Content of the modal");
   const showModal = () => {
@@ -23,7 +25,7 @@ const InputModal = () => {
   return (
     <>
       <Button type="primary" onClick={showModal}>
-        Open Modal with async logic
+        Add Task
       </Button>
       <Modal
         title="Title"

@@ -2,12 +2,15 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import SPA from "./components/SPA";
 import InputModal from "./components/InputModal/InputModal";
+import { getAllTodos } from "@/api";
 
-export default function Home() {
+export default async function Home() {
+  const todos = await getAllTodos();
+  console.log(todos);
   return (
-    <>
-      <SPA />
+    <main>
+      <SPA todos={todos} />
       <InputModal />
-    </>
+    </main>
   );
 }

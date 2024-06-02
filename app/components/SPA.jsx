@@ -11,6 +11,9 @@ import { Button, Layout, Menu, theme } from "antd";
 import Search from "antd/es/input/Search";
 import ChooseCalendar from "./ChooseCalendar/ChooseCalendar";
 import { Footer } from "antd/es/layout/layout";
+import TodoList from "./TodoList/TodoList";
+import InputModal from "./InputModal/InputModal";
+import TaskBar from "./TaskBar/TaskBar";
 
 const { Header, Content, Sider } = Layout;
 
@@ -38,10 +41,12 @@ const items2 = icons.map((icon, index) => {
     }),
   };
 });
-const onSearch = (value, _e, info) => console.log(info?.source, value);
 
-const SPA = () => {
+
+const SPA = ({ todos }) => {
   const [collapsed, setCollapsed] = useState(false);
+
+
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -107,45 +112,12 @@ const SPA = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Layout
-              style={{
-                borderRadius: "1rem",
-                background: "#fff",
-                marginBottom: "1rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: ".5rem",
-                }}
-              >
-                <div>
-                  <Search
-                    placeholder="input search text"
-                    onSearch={onSearch}
-                    enterButton
-                  />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    background: "white",
-                    gap: "1rem",
-                  }}
-                >
-                  <Button type="primary" icon={<PlusOutlined />}>
-                    Add Your Task
-                  </Button>
-                  <MailOutlined />
-                  <UserOutlined />
-                </div>
-              </div>
-            </Layout>
+            <TaskBar />
             <Layout>
-              <div className="first-section">{/* <ChooseCalendar /> */}</div>
+              <div className="first-section">
+                {/* <ChooseCalendar /> */}
+                <TodoList todos={todos} />
+              </div>
             </Layout>
           </Content>
         </Layout>
