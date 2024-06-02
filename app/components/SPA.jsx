@@ -12,7 +12,6 @@ import Search from "antd/es/input/Search";
 import ChooseCalendar from "./ChooseCalendar/ChooseCalendar";
 import { Footer } from "antd/es/layout/layout";
 import TodoList from "./TodoList/TodoList";
-import InputModal from "./InputModal/InputModal";
 import TaskBar from "./TaskBar/TaskBar";
 
 const { Header, Content, Sider } = Layout;
@@ -42,11 +41,8 @@ const items2 = icons.map((icon, index) => {
   };
 });
 
-
 const SPA = ({ todos }) => {
   const [collapsed, setCollapsed] = useState(false);
-
-
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -64,6 +60,7 @@ const SPA = ({ todos }) => {
           }}
         >
           <Menu
+            theme="dark"
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
@@ -101,6 +98,7 @@ const SPA = ({ todos }) => {
                 border: "1px solid white",
               }}
             />
+            <UserOutlined style={{ background: "red", zIndex: "45" }} />
           </Header>
 
           <Content

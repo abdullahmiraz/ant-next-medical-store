@@ -10,7 +10,6 @@ export default async function Home() {
   return (
     <main>
       <SPA todos={todos} />
-      <InputModal />
     </main>
   );
 }

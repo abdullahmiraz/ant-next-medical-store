@@ -53,7 +53,7 @@ const TaskBar = () => {
               <InputModal />
             </div>
             <MailOutlined />
-            <UserOutlined />
+            
           </div>
         </div>
       </Layout>
