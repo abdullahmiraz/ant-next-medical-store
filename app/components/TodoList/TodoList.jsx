@@ -1,21 +1,42 @@
 import React, { useRef, useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  EditOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
 import Highlighter from "react-highlight-words";
+import EditModal from "../EditModal/EditModal";
 
 const TodoList = ({ todos }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editRecord, setEditRecord] = useState(null);
+
+  const handleEdit = (record) => {
+    setEditRecord(record);
+    setModalOpen(true);
+  };
+
+  const handleDelete = (record) => {
+    // yet to do
+    alert("Deleted record:", record);
+  };
+
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
+
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
   };
+
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -118,6 +139,7 @@ const TodoList = ({ todos }) => {
         text
       ),
   });
+
   const columns = [
     {
       title: "Title",
@@ -134,14 +156,47 @@ const TodoList = ({ todos }) => {
       ...getColumnSearchProps("description"),
     },
     {
-      title: "date",
+      title: "Date",
       dataIndex: "date",
       key: "date",
       ...getColumnSearchProps("date"),
       sorter: (a, b) => a.date.length - b.date.length,
       sortDirections: ["descend", "ascend"],
     },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+            style={{ border: "1px solid gray" }}
+          />
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record)}
+            style={{ border: "1px solid gray" }}
+          />
+        </Space>
+      ),
+    },
   ];
-  return <Table columns={columns} dataSource={todos} />;
+
+  return (
+    <>
+      <Table columns={columns} dataSource={todos} />
+      {modalOpen && (
+        <EditModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          record={editRecord}
+        />
+      )}
+    </>
+  );
 };
+
 export default TodoList;

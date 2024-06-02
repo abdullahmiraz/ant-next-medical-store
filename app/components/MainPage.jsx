@@ -6,13 +6,16 @@ import {
   UserOutlined,
   PlusOutlined,
   MailOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import Search from "antd/es/input/Search";
 import ChooseCalendar from "./ChooseCalendar/ChooseCalendar";
 import { Footer } from "antd/es/layout/layout";
 import TodoList from "./TodoList/TodoList";
 import TaskBar from "./TaskBar/TaskBar";
+import Image from "next/image";
 
 const { Header, Content, Sider } = Layout;
 
@@ -41,7 +44,7 @@ const items2 = icons.map((icon, index) => {
   };
 });
 
-const SPA = ({ todos }) => {
+const MainPage = ({ todos }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const {
@@ -49,23 +52,49 @@ const SPA = ({ todos }) => {
   } = theme.useToken();
   return (
     <Layout>
-      <Layout>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
-          width={300}
+      <Header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          margin: "0",
+          padding: "0",
+          paddingLeft: "1rem",
+          // border: "1px solid red",
+          zIndex: 99,
+        }}
+      >
+        <Image width={40} height={40} src="/brand.png" alt="brand" />
+        {/* change the values below, to make sure they are ok */}
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          // defaultSelectedKeys={["Task Manager"]}
+          // items={items1}
           style={{
-            background: colorBgContainer,
+            flex: 1,
+            minWidth: 0,
           }}
-        >
+        />
+
+        <UserOutlined
+          style={{
+            color: "#fff",
+            padding: ".5rem",
+            borderRadius: "50%",
+            border: "3px solid white",
+            marginRight: "1rem",
+          }}
+        />
+      </Header>
+      <Layout>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="demo-logo-vertical" />
           <Menu
             theme="dark"
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             style={{
-              height: "100%",
               borderRight: 0,
             }}
             items={items2}
@@ -74,38 +103,24 @@ const SPA = ({ todos }) => {
         <Layout
           style={{
             padding: "0  ",
-            border: "1px solid red",
           }}
         >
-          <Header
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
             style={{
-              display: "flex",
-              alignItems: "center",
-              border: "5px solid green",
-              margin: "0",
-              padding: "0",
-              paddingLeft: "1rem",
+              fontSize: "16px",
+              width: 64,
+              height: 64,
+              // background: "#000",
             }}
-          >
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              defaultSelectedKeys={["Task Manager"]}
-              items={items1}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                border: "1px solid white",
-              }}
-            />
-            <UserOutlined style={{ background: "red", zIndex: "45" }} />
-          </Header>
-
+          />
           <Content
             style={{
               padding: 24,
               margin: 0,
-              minHeight: "80vh",
+              // minHeight: "80vh",
               background: "#f0f0f0",
               borderRadius: borderRadiusLG,
             }}
@@ -118,16 +133,16 @@ const SPA = ({ todos }) => {
               </div>
             </Layout>
           </Content>
+          <Footer
+            style={{
+              textAlign: "center",
+            }}
+          >
+            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          </Footer>
         </Layout>
       </Layout>
-      <Footer
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-      </Footer>
     </Layout>
   );
 };
-export default SPA;
+export default MainPage;

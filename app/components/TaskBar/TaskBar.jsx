@@ -1,6 +1,6 @@
 import React from "react";
 import { UserOutlined, PlusOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
 import Search from "antd/es/input/Search";
 import InputModal from "../InputModal/InputModal";
 
@@ -17,23 +17,28 @@ const TaskBar = () => {
           borderRadius: "1rem",
           background: "#fff",
           marginBottom: "1rem",
-          border: "1px solid red",
         }}
       >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            padding: ".5rem",
+            alignItems: "center",
+            padding: ".75rem",
           }}
         >
-          <div>
+          {/* <div>
             <Search
               placeholder="input search text"
               onSearch={onSearch}
               enterButton
             />
-          </div>
+          </div> */}
+          <Breadcrumb style={{ margin: "0px 0" }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
           <div
             style={{
               display: "flex",
@@ -43,17 +48,8 @@ const TaskBar = () => {
             }}
           >
             <div>
-              {/* <Button
-                onClick={handleToggleModal}
-                type="primary"
-                icon={<PlusOutlined />}
-              >
-                Open Modal
-              </Button> */}
               <InputModal />
             </div>
-            <MailOutlined />
-            
           </div>
         </div>
       </Layout>
