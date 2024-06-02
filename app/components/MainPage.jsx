@@ -16,6 +16,7 @@ import { Footer } from "antd/es/layout/layout";
 import TodoList from "./TodoList/TodoList";
 import TaskBar from "./TaskBar/TaskBar";
 import Image from "next/image";
+import SideBar from "./SideBar/SideBar";
 
 const { Header, Content, Sider } = Layout;
 
@@ -24,28 +25,7 @@ const items1 = ["Home", "About Us", "Gallery", "Task Manager"].map((key) => ({
   label: `${key}`,
 }));
 
-const pageNames = ["Dashboard", "My Tasks", "Notifications"];
-const icons = [UserOutlined, LaptopOutlined, NotificationOutlined];
-
-const items2 = icons.map((icon, index) => {
-  const key = String(index + 1);
-  const label = pageNames[index];
-  return {
-    key,
-    icon: React.createElement(icon),
-    label: `${label}`,
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
-
 const MainPage = ({ todos }) => {
-  const [collapsed, setCollapsed] = useState(false);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -87,35 +67,12 @@ const MainPage = ({ todos }) => {
         />
       </Header>
       <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{
-              borderRight: 0,
-            }}
-            items={items2}
-          />
-        </Sider>
+        <SideBar />
         <Layout
           style={{
-            padding: "0  ",
+            padding: "0",
           }}
         >
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-              // background: "#000",
-            }}
-          />
           <Content
             style={{
               padding: 24,

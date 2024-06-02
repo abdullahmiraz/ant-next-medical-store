@@ -172,13 +172,13 @@ const TodoList = ({ todos }) => {
             type="link"
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
-            style={{ border: "1px solid gray" }}
+            // style={{ border: "1px solid gray" }}
           />
           <Button
             type="link"
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record)}
-            style={{ border: "1px solid gray" }}
+            // style={{ border: "1px solid gray" }}
           />
         </Space>
       ),
