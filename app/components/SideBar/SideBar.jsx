@@ -38,7 +38,6 @@ const SideBar = () => {
         collapsible
         collapsed={collapsed}
         style={{
-          border: "2px solid red",
           height: "100%",
           position: "relative",
         }}
@@ -51,7 +50,7 @@ const SideBar = () => {
           defaultOpenKeys={["sub1"]}
           style={{
             borderRight: 0,
-            border: "2px solid red",
+           
           }}
           items={items2}
         />
@@ -65,11 +64,10 @@ const SideBar = () => {
             height: "10vh",
             position: "sticky",
             top: "90vh",
-            // bottom: "0",
-            // left: "0",
+            borderTop: "2px solid gray",
+            borderRadius: 0,
             zIndex: 999,
-            border: "2px solid red",
-            background: "#000",
+            background: "transparent",
             color: "white",
           }}
         />

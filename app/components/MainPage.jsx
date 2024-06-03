@@ -27,7 +27,7 @@ const MainPage = ({ todos }) => {
           margin: "0",
           padding: "0",
           paddingLeft: "1rem",
-          // border: "1px solid red",
+          // borderBottom: "1px solid gray",
           zIndex: 99,
         }}
       >
