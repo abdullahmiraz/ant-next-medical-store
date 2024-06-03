@@ -33,7 +33,16 @@ const SideBar = () => {
 
   return (
     <div>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        style={{
+          border: "2px solid red",
+          height: "100%",
+          position: "relative",
+        }}
+      >
         <div className="demo-logo-vertical" />
         <Menu
           theme="dark"
@@ -42,21 +51,29 @@ const SideBar = () => {
           defaultOpenKeys={["sub1"]}
           style={{
             borderRight: 0,
+            border: "2px solid red",
           }}
           items={items2}
         />
+        <Button
+          type="text"
+          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          onClick={() => setCollapsed(!collapsed)}
+          style={{
+            fontSize: "16px",
+            width: "100%",
+            height: "10vh",
+            position: "sticky",
+            top: "90vh",
+            // bottom: "0",
+            // left: "0",
+            zIndex: 999,
+            border: "2px solid red",
+            background: "#000",
+            color: "white",
+          }}
+        />
       </Sider>
-      <Button
-        type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
-        style={{
-          fontSize: "16px",
-          width: 64,
-          height: 64,
-          // background: "#000",
-        }}
-      />
     </div>
   );
 };

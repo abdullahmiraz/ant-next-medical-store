@@ -1,22 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  PlusOutlined,
-  MailOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
-import Search from "antd/es/input/Search";
-import ChooseCalendar from "./ChooseCalendar/ChooseCalendar";
+import { UserOutlined } from "@ant-design/icons";
+import { Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
-import TodoList from "./TodoList/TodoList";
-import TaskBar from "./TaskBar/TaskBar";
 import Image from "next/image";
 import SideBar from "./SideBar/SideBar";
+import TaskBar from "./TaskBar/TaskBar";
+import TodoList from "./TodoList/TodoList";
 
 const { Header, Content, Sider } = Layout;
 
@@ -26,7 +15,6 @@ const items1 = ["Home", "About Us", "Gallery", "Task Manager"].map((key) => ({
 }));
 
 const MainPage = ({ todos }) => {
-
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

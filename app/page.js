@@ -1,10 +1,8 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import SPA from "./components/MainPage";
 import InputModal from "./components/InputModal/InputModal";
 import { getAllTodos } from "@/api";
 import MainPage from "./components/MainPage";
-
 
 export default async function Home() {
   const todos = await getAllTodos();

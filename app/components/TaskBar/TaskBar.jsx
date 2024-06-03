@@ -1,7 +1,4 @@
-import React from "react";
-import { UserOutlined, PlusOutlined, MailOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
-import Search from "antd/es/input/Search";
+import { Breadcrumb, Layout } from "antd";
 import InputModal from "../InputModal/InputModal";
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
