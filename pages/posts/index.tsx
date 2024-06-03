@@ -1,4 +1,4 @@
-// pages/posts.tsx
+// pages/posts/posts.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 

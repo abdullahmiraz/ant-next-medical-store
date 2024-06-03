@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import InputModal from "./components/InputModal/InputModal";
-import { getAllTodos } from "@/api";
+import { getAllTodos } from "../api";
 import MainPage from "./components/MainPage";
 
 export default async function Home() {

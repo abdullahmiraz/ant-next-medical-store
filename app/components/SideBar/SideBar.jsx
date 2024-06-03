@@ -1,78 +1,57 @@
-"use client";
-import React, { useState } from "react";
-import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
-const { Header, Content, Sider } = Layout;
 import {
+  BoxPlotOutlined,
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
 } from "@ant-design/icons";
-const pageNames = ["Dashboard", "My Tasks", "Notifications"];
-const icons = [UserOutlined, LaptopOutlined, NotificationOutlined];
+import { Layout, Menu } from "antd";
+import Link from "next/link";
+import { useState } from "react";
 
-const items2 = icons.map((icon, index) => {
-  const key = String(index + 1);
-  const label = pageNames[index];
-  return {
-    key,
-    icon: React.createElement(icon),
-    label: `${label}`,
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
+const { Sider } = Layout;
+const { SubMenu } = Menu;
+
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
 
+  const handleToggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
-    <div>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        style={{
-          height: "100%",
-          position: "relative",
-        }}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          style={{
-            borderRight: 0,
-           
-          }}
-          items={items2}
-        />
-        <Button
-          type="text"
-          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          onClick={() => setCollapsed(!collapsed)}
-          style={{
-            fontSize: "16px",
-            width: "100%",
-            height: "10vh",
-            position: "sticky",
-            top: "90vh",
-            borderTop: "2px solid gray",
-            borderRadius: 0,
-            zIndex: 999,
-            background: "transparent",
-            color: "white",
-          }}
-        />
-      </Sider>
-    </div>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="logo" />
+      <Menu theme="dark" mode="inline">
+        <Menu.Item key="1" icon={<UserOutlined />}>
+          <Link href="/dashboard">Dashboard</Link>
+        </Menu.Item>
+        <SubMenu key="sub1" icon={<LaptopOutlined />} title="My Tasks">
+          <Menu.Item key="2">
+            <Link href="/tasks/important">Important</Link>
+          </Menu.Item>
+          <Menu.Item key="3">
+            <Link href="/tasks/urgent">Urgent</Link>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Link href="/tasks/completed">Completed</Link>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item key="5" icon={<NotificationOutlined />}>
+          <Link href="/notifications">Notifications</Link>
+        </Menu.Item>
+        <Menu.Item key="6" icon={<BoxPlotOutlined />}>
+          <Link href="/posts">Blog</Link>
+        </Menu.Item>
+      </Menu>
+      {/* <div className="collapse-button" onClick={handleToggleCollapse}>
+        {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+      </div> */}
+    </Sider>
   );
 };
 
