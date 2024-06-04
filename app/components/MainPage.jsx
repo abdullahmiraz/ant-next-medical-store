@@ -27,17 +27,14 @@ const MainPage = ({ todos }) => {
           margin: "0",
           padding: "0",
           paddingLeft: "1rem",
-          // borderBottom: "1px solid gray",
           zIndex: 99,
         }}
       >
         <Image width={40} height={40} src="/brand.png" alt="brand" />
-        {/* change the values below, to make sure they are ok */}
+        
         <Menu
           theme="dark"
           mode="horizontal"
-          // defaultSelectedKeys={["Task Manager"]}
-          // items={items1}
           style={{
             flex: 1,
             minWidth: 0,

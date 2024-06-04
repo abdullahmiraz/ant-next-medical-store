@@ -1,4 +1,4 @@
-import { Breadcrumb, Layout } from "antd";
+import { Breadcrumb, Button, Layout } from "antd";
 import InputModal from "../InputModal/InputModal";
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
@@ -8,10 +8,10 @@ const TaskBar = () => {
     setModalOpen(!modalOpen);
   };
   return (
-    <div>
+    <div style={{ marginTop: "-1rem" }}>
       <Layout
         style={{
-          borderRadius: "1rem",
+          borderRadius: ".3rem",
           background: "#fff",
           marginBottom: "1rem",
         }}
@@ -44,7 +44,8 @@ const TaskBar = () => {
               gap: "1rem",
             }}
           >
-            <div>
+            <div className="flex gap-4">
+              <Button type={"primary"}>Print/XL/Docx</Button>
               <InputModal />
             </div>
           </div>
