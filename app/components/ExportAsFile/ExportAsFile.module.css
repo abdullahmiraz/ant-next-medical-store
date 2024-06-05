@@ -1,0 +1,7 @@
+.customRow {
+  height: max-content !important; /* Adjust the height as needed */
+}
+
+.customRow:hover {
+  background-color: #78caf0 !important;
+}

@@ -1,5 +1,6 @@
 import { Breadcrumb, Button, Layout } from "antd";
 import InputModal from "../InputModal/InputModal";
+import ExportBtn from "../ExportAsFile/ExportBtn";
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 
@@ -45,7 +46,6 @@ const TaskBar = () => {
             }}
           >
             <div className="flex gap-4">
-              <Button type={"primary"}>Print/XL/Docx</Button>
               <InputModal />
             </div>
           </div>

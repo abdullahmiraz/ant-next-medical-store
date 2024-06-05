@@ -2,21 +2,14 @@ import {
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
-  DownloadOutlined,
-  DownOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Input, Menu, Space, Table, Tooltip } from "antd"; // Import Tooltip
+import { Button, Input, Space } from "antd"; // Import Tooltip
+import dayjs from "dayjs";
+import "jspdf-autotable";
 import { useRef, useState } from "react";
-import { findDOMNode } from "react-dom";
-import ReactDOM from "react-dom";
 import Highlighter from "react-highlight-words";
 import EditModal from "../EditModal/EditModal";
-import { DownloadTableExcel } from "react-export-table-to-excel";
-import * as XLSX from "xlsx"; // Import the XLSX library
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import dayjs from "dayjs";
-import styles from "./TodoList.module.css"; // Import CSS module
+import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
 const TodoList = ({ todos }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -98,6 +91,7 @@ const TodoList = ({ todos }) => {
       dataIndex: "title",
       key: "title",
       width: "30%",
+      fixed: "left",
       ...getColumnSearchProps("title"),
     },
     {
@@ -115,6 +109,7 @@ const TodoList = ({ todos }) => {
       dataIndex: "description",
       key: "description",
       width: "40%",
+
       ...getColumnSearchProps("description"),
     },
     {
@@ -137,6 +132,8 @@ const TodoList = ({ todos }) => {
     },
     {
       title: "Actions",
+      width: "100",
+      fixed: "right",
       key: "actions",
       render: (text, record) => (
         <Space size="middle">
@@ -155,90 +152,10 @@ const TodoList = ({ todos }) => {
     },
   ];
 
-  const handleExcelDownload = () => {
-    // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(tableRef.current);
-    if (node) {
-      const tableElement = node.querySelector("table");
-      if (tableElement) {
-        const ws = XLSX.utils.table_to_sheet(tableElement);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-        XLSX.writeFile(wb, "tasks.xlsx");
-      }
-    }
-  };
-
-  const handlePdfDownload = () => {
-    if (tableRef.current && tableRef.current.querySelector("table")) {
-      const doc = new jsPDF();
-
-      const table = tableRef.current.querySelector("table");
-      const columnsToSkip = table.querySelectorAll(
-        "th:last-child, td:last-child"
-      ); // Select last column headers and cells
-
-      columnsToSkip.forEach((column) => (column.style.display = "none")); // Hide the last column
-
-      doc.autoTable({
-        html: table,
-        startY: 10,
-        styles: {
-          overflow: "linebreak", // Ensure text doesn't overlap
-        },
-      });
-
-      columnsToSkip.forEach((column) => (column.style.display = "")); // Restore display of the last column
-
-      doc.save("tasks.pdf");
-    } else {
-      console.error("Table content not found or empty");
-    }
-  };
-
   return (
     <>
-      <div className="flex justify-end gap-4 my-2">
-        <>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item
-                  key="1"
-                  onClick={() => {
-                    handleExcelDownload();
-                  }}
-                >
-                  Export to Excel
-                </Menu.Item>
-                <Menu.Item
-                  key="2"
-                  onClick={() => {
-                    handlePdfDownload();
-                  }}
-                >
-                  Export to PDF
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Button>
-              <Space>
-                Export
-                <DownOutlined />
-              </Space>
-            </Button>
-          </Dropdown>
-        </>
-      </div>
-
-      <div ref={tableRef}>
-        <Table
-          columns={columns}
-          dataSource={filteredTodos}
-          rowClassName={styles.customRow}
-          pagination={true}
-        />
+      <div className=" ">
+        <ExportAsFile tableCol={columns} filteredTodos={filteredTodos} />
       </div>
 
       {modalOpen && (

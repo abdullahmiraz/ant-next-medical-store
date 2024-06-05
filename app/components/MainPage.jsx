@@ -1,11 +1,12 @@
 "use client";
 import { UserOutlined } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Button, Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import Image from "next/image";
 import SideBar from "./SideBar/SideBar";
 import TaskBar from "./TaskBar/TaskBar";
 import TodoList from "./TodoList/TodoList";
+import Link from "next/link";
 
 const { Header, Content, Sider } = Layout;
 
@@ -40,16 +41,17 @@ const MainPage = ({ todos }) => {
             minWidth: 0,
           }}
         />
-
-        <UserOutlined
-          style={{
-            color: "#fff",
-            padding: ".5rem",
-            borderRadius: "50%",
-            border: "3px solid white",
-            marginRight: "1rem",
-          }}
-        />
+        <Link href="/userprofile">
+          <UserOutlined
+            style={{
+              color: "#fff",
+              padding: ".5rem",
+              borderRadius: "50%",
+              border: "3px solid white",
+              marginRight: "1rem",
+            }}
+          />
+        </Link>
       </Header>
       <Layout>
         <SideBar />
