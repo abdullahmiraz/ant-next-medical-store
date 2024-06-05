@@ -10,14 +10,22 @@
     "json-server": "json-server --watch data/todos.json --port 3002"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "antd": "^5.17.4",
     "axios": "^1.7.2",
+    "docx": "^8.5.0",
+    "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
     "json-server": "^1.0.0-beta.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-export-table-to-excel": "^1.0.6",
     "react-highlight-words": "^0.20.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "20.14.0",

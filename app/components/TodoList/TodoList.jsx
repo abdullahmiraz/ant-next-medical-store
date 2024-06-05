@@ -1,4 +1,3 @@
-"use client";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -7,15 +6,19 @@ import {
 } from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
 import { useRef, useState } from "react";
+import { findDOMNode } from "react-dom";
+import ReactDOM from "react-dom";
 import Highlighter from "react-highlight-words";
 import EditModal from "../EditModal/EditModal";
-// import { useTableExport } from "react-table-export"; // Import library
-import Link from "next/link";
+import { DownloadTableExcel } from "react-export-table-to-excel";
+import * as XLSX from "xlsx"; // Import the XLSX library
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const TodoList = ({ todos }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState(null);
-  const exportRef = useRef(null); // Reference for download button
+  const tableRef = useRef(null); // Reference for table
 
   const handleEdit = (record) => {
     setEditRecord(record);
@@ -149,34 +152,67 @@ const TodoList = ({ todos }) => {
     },
   ];
 
-  // const handleExport = () => {
-  //   const filteredData = todos.filter((todo) => {
-  //     // ... your filtering logic ...
-  //   });
-  //   exportDataAsExcel({ columns, data: filteredData }); // Export filtered data
-  // };
+  const handleDownload = () => {
+    const node = findDOMNode(tableRef.current);
+    if (node) {
+      const tableElement = node.querySelector("table");
+      if (tableElement) {
+        const ws = XLSX.utils.table_to_sheet(tableElement);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tasks");
+        XLSX.writeFile(wb, "tasks.xlsx");
+      }
+    }
+  };
 
-  const handleExport = () => {
-    const filteredData = todos.filter((todo) => {
-      // ... your filtering logic ...
-    });
+  const handlePdfDownload = () => {
+    if (tableRef.current && tableRef.current.querySelector("table")) {
+      const doc = new jsPDF();
 
-    const ws = XLSX.utils.json_to_sheet(filteredData); // Convert data to worksheet
-    const wb = XLSX.utils.book_new(); // Create a new workbook
-    XLSX.utils.book_append_sheet(wb, ws, "Tasks"); // Add worksheet to workbook
+      const table = tableRef.current.querySelector("table");
+      const columnsToSkip = table.querySelectorAll(
+        "th:last-child, td:last-child"
+      ); // Select last column headers and cells
 
-    /* Optional: Set workbook properties (e.g., sheet name) */
-    // wb.SheetNames.push("My Tasks"); // Set sheet name if desired
+      columnsToSkip.forEach((column) => (column.style.display = "none")); // Hide the last column
 
-    XLSX.writeFile(wb, "my_tasks.xlsx"); // Write workbook to a file
+      doc.autoTable({
+        html: table,
+        startY: 10,
+        styles: {
+          overflow: "linebreak", // Ensure text doesn't overlap
+        },
+      });
 
-    // Simulate a download click to trigger browser behavior
-    exportRef.current.click();
+      columnsToSkip.forEach((column) => (column.style.display = "")); // Restore display of the last column
+
+      doc.save("tasks.pdf");
+    } else {
+      console.error("Table content not found or empty");
+    }
   };
 
   return (
     <>
-      <Table columns={columns} dataSource={filteredTodos} />
+      <Button
+        className="float-right"
+        icon={<DownloadOutlined />}
+        onClick={handleDownload}
+      >
+        Export to Excel
+      </Button>
+
+      <Button
+        className="float-right"
+        icon={<DownloadOutlined />}
+        onClick={handlePdfDownload}
+      >
+        Export to PDF
+      </Button>
+
+      <div ref={tableRef}>
+        <Table columns={columns} dataSource={filteredTodos} />
+      </div>
 
       {modalOpen && (
         <EditModal
@@ -185,7 +221,6 @@ const TodoList = ({ todos }) => {
           record={editRecord}
         />
       )}
-      <Button ref={exportRef} download style={{ border: "1px solid red" }} />
     </>
   );
 };
