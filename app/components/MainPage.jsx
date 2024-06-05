@@ -31,7 +31,7 @@ const MainPage = ({ todos }) => {
         }}
       >
         <Image width={40} height={40} src="/brand.png" alt="brand" />
-        
+
         <Menu
           theme="dark"
           mode="horizontal"
@@ -80,7 +80,7 @@ const MainPage = ({ todos }) => {
               textAlign: "center",
             }}
           >
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
+            ATI Limited ©{new Date().getFullYear()}
           </Footer>
         </Layout>
       </Layout>

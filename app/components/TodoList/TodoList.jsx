@@ -152,7 +152,7 @@ const TodoList = ({ todos }) => {
     },
   ];
 
-  const handleDownload = () => {
+  const handleExcelDownload = () => {
     const node = findDOMNode(tableRef.current);
     if (node) {
       const tableElement = node.querySelector("table");
@@ -194,21 +194,23 @@ const TodoList = ({ todos }) => {
 
   return (
     <>
-      <Button
-        className="float-right"
-        icon={<DownloadOutlined />}
-        onClick={handleDownload}
-      >
-        Export to Excel
-      </Button>
+      <div className="flex justify-end gap-4 my-2">
+        <Button
+          className="float-right"
+          icon={<DownloadOutlined />}
+          onClick={handleExcelDownload}
+        >
+          Export to Excel
+        </Button>
 
-      <Button
-        className="float-right"
-        icon={<DownloadOutlined />}
-        onClick={handlePdfDownload}
-      >
-        Export to PDF
-      </Button>
+        <Button
+          className="float-right"
+          icon={<DownloadOutlined />}
+          onClick={handlePdfDownload}
+        >
+          Export to PDF
+        </Button>
+      </div>
 
       <div ref={tableRef}>
         <Table columns={columns} dataSource={filteredTodos} />

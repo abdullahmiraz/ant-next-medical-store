@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Tooltip } from "antd";
 import { useRouter } from "next/navigation";
 import TaskForm from "../TaskForm/TaskForm";
 const InputModal = ({ modalOpen }) => {
@@ -25,11 +25,13 @@ const InputModal = ({ modalOpen }) => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
-        Add Task
-      </Button>
+      <Tooltip title="Add a new task">
+        <Button type="primary" onClick={showModal}>
+           Add
+        </Button>
+      </Tooltip>
       <Modal
-      style={{marginTop: "-2.2rem"}}
+        style={{ marginTop: "-2.2rem" }}
         title="Add your task "
         open={open}
         onOk={handleOk}
