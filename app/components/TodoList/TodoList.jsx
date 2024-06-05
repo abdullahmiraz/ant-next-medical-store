@@ -3,8 +3,9 @@ import {
   EditOutlined,
   SearchOutlined,
   DownloadOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Dropdown, Input, Menu, Space, Table, Tooltip } from "antd"; // Import Tooltip
 import { useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
 import ReactDOM from "react-dom";
@@ -14,6 +15,8 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 import * as XLSX from "xlsx"; // Import the XLSX library
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import dayjs from "dayjs";
+import styles from "./TodoList.module.css"; // Import CSS module
 
 const TodoList = ({ todos }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -129,7 +132,7 @@ const TodoList = ({ todos }) => {
       dataIndex: "date",
       key: "date",
       ...getColumnSearchProps("date"),
-      sorter: (a, b) => a.date.length - b.date.length,
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
       sortDirections: ["descend", "ascend"],
     },
     {
@@ -153,6 +156,7 @@ const TodoList = ({ todos }) => {
   ];
 
   const handleExcelDownload = () => {
+    // eslint-disable-next-line react/no-find-dom-node
     const node = findDOMNode(tableRef.current);
     if (node) {
       const tableElement = node.querySelector("table");
@@ -195,25 +199,46 @@ const TodoList = ({ todos }) => {
   return (
     <>
       <div className="flex justify-end gap-4 my-2">
-        <Button
-          className="float-right"
-          icon={<DownloadOutlined />}
-          onClick={handleExcelDownload}
-        >
-          Export to Excel
-        </Button>
-
-        <Button
-          className="float-right"
-          icon={<DownloadOutlined />}
-          onClick={handlePdfDownload}
-        >
-          Export to PDF
-        </Button>
+        <>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item
+                  key="1"
+                  onClick={() => {
+                    handleExcelDownload();
+                  }}
+                >
+                  Export to Excel
+                </Menu.Item>
+                <Menu.Item
+                  key="2"
+                  onClick={() => {
+                    handlePdfDownload();
+                  }}
+                >
+                  Export to PDF
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Button>
+              <Space>
+                Export
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </>
       </div>
 
       <div ref={tableRef}>
-        <Table columns={columns} dataSource={filteredTodos} />
+        <Table
+          columns={columns}
+          dataSource={filteredTodos}
+          rowClassName={styles.customRow}
+          pagination={true}
+        />
       </div>
 
       {modalOpen && (
