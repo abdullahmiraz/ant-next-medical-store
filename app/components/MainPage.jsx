@@ -69,7 +69,7 @@ const MainPage = ({ todos }) => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <TaskBar />
+           
             <Layout>
               <div className="first-section">
                 {/* <ChooseCalendar /> */}

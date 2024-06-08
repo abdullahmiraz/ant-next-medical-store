@@ -18,57 +18,14 @@ import "jspdf-autotable";
 import dayjs from "dayjs";
 import styles from "./ExportAsFile.module.css"; // Import CSS module
 import ExportBtn from "./ExportBtn";
+import TaskBar from "../TaskBar/TaskBar";
 //
 const ExportAsFile = ({ tableCol, filteredTodos }) => {
   const tableRef = useRef(null); // Reference for table
 
-  const handleExcelDownload = () => {
-    // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(tableRef.current);
-    if (node) {
-      const tableElement = node.querySelector("table");
-      if (tableElement) {
-        const ws = XLSX.utils.table_to_sheet(tableElement);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-        XLSX.writeFile(wb, "tasks.xlsx");
-      }
-    }
-  };
-
-  const handlePdfDownload = () => {
-    if (tableRef.current && tableRef.current.querySelector("table")) {
-      const doc = new jsPDF();
-
-      const table = tableRef.current.querySelector("table");
-      const columnsToSkip = table.querySelectorAll(
-        "th:last-child, td:last-child"
-      ); // Select last column headers and cells
-
-      columnsToSkip.forEach((column) => (column.style.display = "none")); // Hide the last column
-
-      doc.autoTable({
-        html: table,
-        startY: 10,
-        styles: {
-          overflow: "linebreak", // Ensure text doesn't overlap
-        },
-      });
-
-      columnsToSkip.forEach((column) => (column.style.display = "")); // Restore display of the last column
-
-      doc.save("tasks.pdf");
-    } else {
-      console.error("Table content not found or empty");
-    }
-  };
-
   return (
     <div>
-      <ExportBtn
-        handlePdfDownload={handlePdfDownload}
-        handleExcelDownload={handleExcelDownload}
-      />
+      <TaskBar tableRef={tableRef} />
       <div ref={tableRef}>
         <Table
           columns={tableCol}

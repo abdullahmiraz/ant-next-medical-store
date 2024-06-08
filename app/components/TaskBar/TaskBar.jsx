@@ -4,7 +4,7 @@ import ExportBtn from "../ExportAsFile/ExportBtn";
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 
-const TaskBar = () => {
+const TaskBar = ({ tableRef }) => {
   const handleToggleModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -45,6 +45,7 @@ const TaskBar = () => {
               gap: "1rem",
             }}
           >
+            <ExportBtn tableRef={tableRef} />
             <div className="flex gap-4">
               <InputModal />
             </div>

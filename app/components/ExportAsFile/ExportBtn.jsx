@@ -1,14 +1,52 @@
-import React from "react";
-import { Button, Dropdown, Input, Menu, Space, Table, Tooltip } from "antd"; // Import Tooltip
-import {  
-  DeleteOutlined,
-  EditOutlined,
-  SearchOutlined,
-  DownloadOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { DownOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Space } from "antd"; // Import Tooltip
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { findDOMNode } from "react-dom";
+import * as XLSX from "xlsx"; // Import the XLSX library
 
-const ExportBtn = ({ handleExcelDownload, handlePdfDownload }) => {
+const ExportBtn = ({ tableRef }) => {
+  const handleExcelDownload = () => {
+    // eslint-disable-next-line react/no-find-dom-node
+    const node = findDOMNode(tableRef.current);
+    if (node) {
+      const tableElement = node.querySelector("table");
+      if (tableElement) {
+        const ws = XLSX.utils.table_to_sheet(tableElement);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Tasks");
+        XLSX.writeFile(wb, "tasks.xlsx");
+      }
+    }
+  };
+
+  const handlePdfDownload = () => {
+    if (tableRef.current && tableRef.current.querySelector("table")) {
+      const doc = new jsPDF();
+
+      const table = tableRef.current.querySelector("table");
+      const columnsToSkip = table.querySelectorAll(
+        "th:last-child, td:last-child"
+      ); // Select last column headers and cells
+
+      columnsToSkip.forEach((column) => (column.style.display = "none")); // Hide the last column
+
+      doc.autoTable({
+        html: table,
+        startY: 10,
+        styles: {
+          overflow: "linebreak", // Ensure text doesn't overlap
+        },
+      });
+
+      columnsToSkip.forEach((column) => (column.style.display = "")); // Restore display of the last column
+
+      doc.save("tasks.pdf");
+    } else {
+      console.error("Table content not found or empty");
+    }
+  };
+
   return (
     <>
       <Dropdown
