@@ -1,12 +1,11 @@
 "use client";
 import { UserOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import Image from "next/image";
-import SideBar from "./SideBar/SideBar";
-import TaskBar from "./TaskBar/TaskBar";
-import TodoList from "./TodoList/TodoList";
 import Link from "next/link";
+import SideBar from "./SideBar/SideBar";
+import TodoList from "./TodoList/TodoList";
 
 const { Header, Content, Sider } = Layout;
 
@@ -69,7 +68,6 @@ const MainPage = ({ todos }) => {
               borderRadius: borderRadiusLG,
             }}
           >
-           
             <Layout>
               <div className="first-section">
                 {/* <ChooseCalendar /> */}

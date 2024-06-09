@@ -25,7 +25,6 @@ const SideBar = () => {
       onCollapse={setCollapsed}
       style={{ minHeight: "100vh" }}
     >
-      <div className="logo" />
       <Menu theme="dark" mode="inline">
         <Menu.Item key="1" icon={<UserOutlined />}>
           <Link href="/dashboard">Dashboard</Link>
@@ -42,10 +41,13 @@ const SideBar = () => {
           </Menu.Item>
         </SubMenu>
         <Menu.Item key="5" icon={<NotificationOutlined />}>
-          <Link href="/notifications">Notifications</Link>
+          <Link href="/inventory">Inventory</Link>
         </Menu.Item>
         <Menu.Item key="6" icon={<BoxPlotOutlined />}>
-          <Link href="/posts">Blog</Link>
+          <Link href="/sales">Sales</Link>
+        </Menu.Item>
+        <Menu.Item key="7" icon={<BoxPlotOutlined />}>
+          <Link href="/users-management">User Management</Link>
         </Menu.Item>
       </Menu>
       {/* <div className="collapse-button" onClick={handleToggleCollapse}>
