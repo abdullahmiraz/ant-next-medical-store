@@ -1,15 +1,20 @@
-"use client";
-import React from "react";
-import SideBar from "../../components/SideBar/SideBar";
-import { Layout, theme } from "antd";
-import FooterComp from "../../components/FooterComp/FooterComp";
-import Navbar from "../../components/Navbar/Navbar";
+import { Layout } from "antd";
 import DashboardTemplate from "../../components/DashboardTemplate/DashboardTemplate";
+import TodoList from "../../components/TodoList/TodoList";
+import { getAllTodos } from "../../api";
 
 const { Header, Content, Sider } = Layout;
 
-const InventoryPage = ({}) => {
-  return <DashboardTemplate>Hi</DashboardTemplate>;
+const InventoryPage = async () => {
+  const todos = await getAllTodos();
+  console.log(todos);
+  return (
+    <DashboardTemplate>
+      <div className="first-section">
+        <TodoList todos={todos} />
+      </div>
+    </DashboardTemplate>
+  );
 };
 
 export default InventoryPage;

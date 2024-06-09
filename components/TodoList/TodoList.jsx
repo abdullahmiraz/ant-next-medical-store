@@ -1,3 +1,4 @@
+"use client";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -65,7 +66,7 @@ const TodoList = ({ todos }) => {
       ),
   });
 
-  const filteredTodos = todos.filter((todo) => {
+  const filteredTodos = todos?.filter((todo) => {
     return (
       todo.name.toLowerCase().includes(searchText.name.toLowerCase()) &&
       todo.category.toLowerCase().includes(searchText.category.toLowerCase()) &&
@@ -294,6 +295,10 @@ const TodoList = ({ todos }) => {
       ),
     },
   ];
+
+  if (!todos) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
