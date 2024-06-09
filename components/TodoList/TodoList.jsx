@@ -94,6 +94,8 @@ const TodoList = ({ todos }) => {
       width: "20%",
       fixed: "left",
       ...getColumnSearchProps("name"),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -111,6 +113,8 @@ const TodoList = ({ todos }) => {
       key: "category",
       width: "10%",
       ...getColumnSearchProps("category"),
+      sorter: (a, b) => a.category.localeCompare(b.category),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -128,6 +132,8 @@ const TodoList = ({ todos }) => {
       key: "type",
       width: "10%",
       ...getColumnSearchProps("type"),
+      sorter: (a, b) => a.type.localeCompare(b.type),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -145,6 +151,8 @@ const TodoList = ({ todos }) => {
       key: "price",
       width: "10%",
       ...getColumnSearchProps("price"),
+      sorter: (a, b) => a.price - b.price,
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -162,6 +170,8 @@ const TodoList = ({ todos }) => {
       key: "stock",
       width: "10%",
       ...getColumnSearchProps("stock"),
+      sorter: (a, b) => a.stock - b.stock,
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -179,6 +189,8 @@ const TodoList = ({ todos }) => {
       key: "manufacturer",
       width: "20%",
       ...getColumnSearchProps("manufacturer"),
+      sorter: (a, b) => a.manufacturer.localeCompare(b.manufacturer),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -196,9 +208,8 @@ const TodoList = ({ todos }) => {
       key: "expiry_date",
       width: "10%",
       ...getColumnSearchProps("expiry_date"),
-      sorter: (a, b) =>
-        dayjs(a.expiry_date).unix() - dayjs(b.expiry_date).unix(),
-      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => new Date(a.expiry_date) - new Date(b.expiry_date),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -216,6 +227,8 @@ const TodoList = ({ todos }) => {
       key: "batch_number",
       width: "10%",
       ...getColumnSearchProps("batch_number"),
+      sorter: (a, b) => a.batch_number.localeCompare(b.batch_number),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -233,6 +246,8 @@ const TodoList = ({ todos }) => {
       key: "aisle_location",
       width: "10%",
       ...getColumnSearchProps("aisle_location"),
+      sorter: (a, b) => a.aisle_location.localeCompare(b.aisle_location),
+      sortDirections: ["ascend", "descend"],
     },
     {
       title: (
@@ -250,13 +265,14 @@ const TodoList = ({ todos }) => {
       key: "prescription_required",
       width: "10%",
       ...getColumnSearchProps("prescription_required"),
+      sorter: (a, b) => a.prescription_required - b.prescription_required,
+      sortDirections: ["ascend", "descend"],
       render: (text) => (
         <span style={{ color: text ? "red" : "blue" }}>
           {text ? "True" : "False"}
         </span>
       ),
     },
-
     {
       title: "Actions",
       width: "10%",
