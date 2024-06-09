@@ -11,7 +11,7 @@ import Highlighter from "react-highlight-words";
 import EditModal from "../EditModal/EditModal";
 import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
-const TodoList = ({ todos }) => {
+const MedicineList = ({ todos }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState(null);
   const tableRef = useRef(null);
@@ -317,4 +317,4 @@ const TodoList = ({ todos }) => {
   );
 };
 
-export default TodoList;
+export default MedicineList;

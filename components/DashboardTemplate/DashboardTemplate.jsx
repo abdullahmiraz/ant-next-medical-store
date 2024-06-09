@@ -15,9 +15,8 @@ const DashboardTemplate = ({ children }) => {
     <Layout>
       <Navbar />
       <Layout>
-        <Sider>
-          <SideBar />
-        </Sider>
+        <SideBar />
+
         <Layout style={{ padding: 0 }}>
           <Content
             style={{

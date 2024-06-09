@@ -19,7 +19,9 @@ const Navbar = () => {
           zIndex: 99,
         }}
       >
-        <Image width={40} height={40} src="/brand.png" alt="brand" />
+        <Link href={"/"}>
+          <Image width={40} height={40} src="/brand.png" alt="brand" />
+        </Link>
 
         <Menu
           theme="dark"
