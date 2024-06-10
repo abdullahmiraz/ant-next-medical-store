@@ -1,14 +1,47 @@
 "use client";
-import { Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Space } from "antd";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
-import Link from "next/link";
-import ExportAsFile from "../ExportAsFile/ExportAsFile";
 import { getAllSalesDetails } from "../../api";
+import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
-const SalesManagement = () => {
-  const [sales, setSales] = useState([]);
+interface Sale {
+  id: number;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+  };
+  order: {
+    orderId: string;
+    date: string;
+    total: number;
+    status: string;
+    items: { name: string }[];
+  };
+}
+
+interface SearchTextState {
+  id: string;
+  item: string;
+  customerName: string;
+  orderId: string;
+  orderDate: string;
+  totalAmount: string;
+  status: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  date: string;
+  total: string;
+}
+
+const SalesManagement: React.FC = () => {
+  const [sales, setSales] = useState<Sale[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,16 +56,26 @@ const SalesManagement = () => {
     fetchData();
   }, []);
 
-  const [searchText, setSearchText] = useState({
+  const [searchText, setSearchText] = useState<SearchTextState>({
     id: "",
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    date: "",
+    total: "",
     customerName: "",
     orderId: "",
     orderDate: "",
     totalAmount: "",
     status: "",
+    item: "",
   });
 
-  const handleSearch = (e, dataIndex) => {
+  const handleSearch = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    dataIndex: keyof SearchTextState
+  ) => {
     const value = e.target.value;
     setSearchText((prevState) => ({
       ...prevState,
@@ -40,16 +83,16 @@ const SalesManagement = () => {
     }));
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
+  const getColumnSearchProps = (dataIndex: string) => ({
     filterDropdown: false,
-    filterIcon: (filtered) => (
+    filterIcon: (filtered: boolean) => (
       <SearchOutlined
         style={{
           color: searchText[dataIndex] ? "#1677ff" : undefined,
         }}
       />
     ),
-    render: (text) =>
+    render: (text: string) =>
       searchText[dataIndex] ? (
         <Highlighter
           highlightStyle={{
@@ -70,7 +113,6 @@ const SalesManagement = () => {
     const { name, email, phone, address } = customer ?? {};
     const { orderId, date, total, status, items } = order ?? {};
 
-    // Check if any of the fields match the search text
     return (
       name?.toLowerCase().includes(searchText.name?.toLowerCase()) ||
       email?.toLowerCase().includes(searchText.email?.toLowerCase()) ||
@@ -163,7 +205,11 @@ const SalesManagement = () => {
       key: "orderDate",
       width: "10%",
       ...getColumnSearchProps("orderDate"),
-      sorter: (a, b) => new Date(a.order.date) - new Date(b.order.date), // Sorting by nested value
+      sorter: (a: Sale, b: Sale) => {
+        const dateA = new Date(a.order.date);
+        const dateB = new Date(b.order.date);
+        return dateA.getTime() - dateB.getTime();
+      },
       sortDirections: ["ascend", "descend"],
     },
     {

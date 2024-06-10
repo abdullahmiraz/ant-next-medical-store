@@ -3,14 +3,10 @@ import { UserOutlined } from "@ant-design/icons";
 import { Layout } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Correct import for usePathname in next/navigation
 
 const { Header } = Layout;
 
-const Navbar = () => {
-  const pathname = usePathname();
-  const isDashboard = pathname.startsWith("/dashboard");
-
+const Navbar: React.FC = () => {
   return (
     <Header
       style={{
@@ -26,10 +22,10 @@ const Navbar = () => {
       <Link href="/">
         <Image width={40} height={40} src="/brand.png" alt="brand" />
       </Link>
-      <nav
+      {/* <nav
         style={{
           flex: 1,
-          display: isDashboard ? "none" : "flex",
+          display: "flex",
           justifyContent: "center",
           gap: "1.3rem",
         }}
@@ -42,7 +38,7 @@ const Navbar = () => {
         <Link href="/gallery">Gallery</Link>
         <Link href="/about-us">About Us</Link>
         <Link href="/contact-us">Contact Us</Link>
-      </nav>
+      </nav> */}
       <Link href="/userprofile">
         <UserOutlined
           style={{

@@ -1,0 +1,87 @@
+'use client';
+
+import { Menu, Layout, Button } from "antd";
+import { UserOutlined, MenuOutlined } from "@ant-design/icons";
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useClient, useRouter } from "next/navigation";
+
+const { Header } = Layout;
+
+const Navbar = () => {
+  const { pathname } = useRouter();
+  const isDashboard = pathname?.includes("dashboard");
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 768);
+    };
+
+    handleResize(); // Check on initial render
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return (
+    <Header className="flex items-center justify-between px-4 py-2 bg-blue-900 text-white">
+      <Link href="/">
+        <Image width={40} height={40} src="/brand.png" alt="brand" />
+      </Link>
+      {/* Responsive Menu */}
+      <div className={`flex ${isDashboard ? "hidden" : "flex"} items-center`}>
+        <nav className={`flex gap-6 ${isSmallScreen ? "hidden" : "flex"}`}>
+          <Link href="/">Home</Link>
+          <Link href="/request-order">Request Order</Link>
+          <Link href="/special-offers">Special Offers</Link>
+          <Link href="/branch-locations">Branch Locations</Link>
+          <Link href="/review">Review</Link>
+          <Link href="/gallery">Gallery</Link>
+          <Link href="/about-us">About Us</Link>
+          <Link href="/contact-us">Contact Us</Link>
+        </nav>
+        {/* Stacked Menu Button */}
+        {isSmallScreen && (
+          <Menu mode="vertical" theme="dark" className="block">
+            <Menu.Item key="home">
+              <Link href="/">Home</Link>
+            </Menu.Item>
+            <Menu.Item key="request-order">
+              <Link href="/request-order">Request Order</Link>
+            </Menu.Item>
+            <Menu.Item key="special-offers">
+              <Link href="/special-offers">Special Offers</Link>
+            </Menu.Item>
+            <Menu.Item key="branch-locations">
+              <Link href="/branch-locations">Branch Locations</Link>
+            </Menu.Item>
+            <Menu.Item key="review">
+              <Link href="/review">Review</Link>
+            </Menu.Item>
+            <Menu.Item key="gallery">
+              <Link href="/gallery">Gallery</Link>
+            </Menu.Item>
+            <Menu.Item key="about-us">
+              <Link href="/about-us">About Us</Link>
+            </Menu.Item>
+            <Menu.Item key="contact-us">
+              <Link href="/contact-us">Contact Us</Link>
+            </Menu.Item>
+          </Menu>
+        )}
+        {/* Menu Toggle Button */}
+        {isSmallScreen && (
+          <Button icon={<MenuOutlined />} className="text-white block" />
+        )}
+      </div>
+      <Link href="/userprofile">
+        <UserOutlined className="text-white p-2 border-2 border-white rounded-full cursor-pointer" />
+      </Link>
+    </Header>
+  );
+};
+
+export default Navbar;
