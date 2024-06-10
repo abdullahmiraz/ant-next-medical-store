@@ -126,6 +126,7 @@ const SalesManagement = () => {
       ...getColumnSearchProps("customerName"),
       sorter: (a, b) => a.customer.name.localeCompare(b.customer.name), // Sorting by nested value
       sortDirections: ["ascend", "descend"],
+      //   render: (text) => <Input value={text} />,
     },
     {
       title: (
@@ -221,7 +222,6 @@ const SalesManagement = () => {
       ),
     },
   ];
-  
 
   if (!sales) {
     return <div>Loading...</div>;
