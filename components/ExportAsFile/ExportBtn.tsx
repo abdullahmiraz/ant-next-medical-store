@@ -12,6 +12,7 @@ interface ExportBtnProps {
 
 const ExportBtn: React.FC<ExportBtnProps> = ({ tableRef }) => {
   const handleExcelDownload = () => {
+    // eslint-disable-next-line react/no-find-dom-node
     const node = findDOMNode(tableRef.current);
     if (node) {
       const tableElement = node.querySelector("table");

@@ -12,7 +12,7 @@ import { useState } from "react";
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const SideBar = () => {
+const SideBar: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const handleToggleCollapse = () => {

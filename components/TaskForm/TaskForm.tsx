@@ -1,31 +1,46 @@
-import React from "react";
+import React, { createContext, FC, useContext, useMemo } from "react";
 import { Button, DatePicker, Form, Input } from "antd";
-const MyFormItemContext = React.createContext([]);
-function toArr(str) {
+
+interface MyFormItemProps {
+  name?: string | string[];
+}
+
+const MyFormItemContext = createContext<string[]>([]);
+
+function toArr(str: string | string[]): string[] {
   return Array.isArray(str) ? str : [str];
 }
-const MyFormItemGroup = ({ prefix, children }) => {
-  const prefixPath = React.useContext(MyFormItemContext);
-  const concatPath = React.useMemo(
+
+const MyFormItemGroup: FC<{
+  prefix: string | string[];
+  children: React.ReactNode;
+}> = ({ prefix, children }) => {
+  const prefixPath = useContext(MyFormItemContext);
+  const concatPath = useMemo(
     () => [...prefixPath, ...toArr(prefix)],
     [prefixPath, prefix]
   );
+
   return (
     <MyFormItemContext.Provider value={concatPath}>
       {children}
     </MyFormItemContext.Provider>
   );
 };
-const MyFormItem = ({ name, ...props }) => {
-  const prefixPath = React.useContext(MyFormItemContext);
+
+const MyFormItem: FC<MyFormItemProps> = ({ name, ...props }) => {
+  const prefixPath = useContext(MyFormItemContext);
   const concatName =
     name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;
+
   return <Form.Item name={concatName} {...props} />;
 };
-const TaskForm = () => {
-  const onFinish = (value) => {
+
+const TaskForm: FC = () => {
+  const onFinish = (value: any) => {
     console.log(value);
   };
+
   return (
     <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
       <MyFormItemGroup prefix={["user"]}>
@@ -49,4 +64,5 @@ const TaskForm = () => {
     </Form>
   );
 };
+
 export default TaskForm;

@@ -63,6 +63,12 @@ const MedicineList: React.FC = () => {
     category: "",
     type: "",
     expiry_date: "",
+    price: "", // Add price with string type
+    stock: "", // Add stock with string type
+    manufacturer: "",
+    batch_number: "",
+    aisle_location: "",
+    prescription_required: "", // Add prescription_required with string type
   });
 
   const handleSearch = (
@@ -121,7 +127,7 @@ const MedicineList: React.FC = () => {
           <div className="text-center">id</div>
           <Input
             placeholder="Search id"
-            value={searchText?.id}
+            value={searchText.id}
             onChange={(e) => handleSearch(e, "id")}
             style={{ marginTop: 8 }}
           />
@@ -132,10 +138,225 @@ const MedicineList: React.FC = () => {
       width: "5%",
       fixed: "left",
       ...getColumnSearchProps("id"),
-      sorter: (a: Item, b: Item) => String(a.id).localeCompare(String(b.id)),
+      sorter: (a, b) => String(a.id).localeCompare(String(b.id)),
       sortDirections: ["ascend", "descend"],
     },
-    // Other columns...
+    {
+      title: (
+        <div>
+          <div className="text-center">Name</div>
+          <Input
+            placeholder="Search name"
+            value={searchText.name}
+            onChange={(e) => handleSearch(e, "name")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "name",
+      key: "name",
+      width: "20%",
+      fixed: "left",
+      ...getColumnSearchProps("name"),
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Category</div>
+          <Input
+            placeholder="Search category"
+            value={searchText.category}
+            onChange={(e) => handleSearch(e, "category")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "category",
+      key: "category",
+      width: "10%",
+      ...getColumnSearchProps("category"),
+      sorter: (a, b) => a.category.localeCompare(b.category),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Type</div>
+          <Input
+            placeholder="Search type"
+            value={searchText.type}
+            onChange={(e) => handleSearch(e, "type")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "type",
+      key: "type",
+      width: "10%",
+      ...getColumnSearchProps("type"),
+      sorter: (a: Item, b: Item) => a.type.localeCompare(String(b.type)),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Price</div>
+          <Input
+            placeholder="Search price"
+            value={searchText.price}
+            onChange={(e) => handleSearch(e, "price")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "price",
+      key: "price",
+      width: "10%",
+      ...getColumnSearchProps("price"),
+      sorter: (a, b) => a.price - b.price,
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Stock</div>
+          <Input
+            placeholder="Search stock"
+            value={searchText.stock}
+            onChange={(e) => handleSearch(e, "stock")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "stock",
+      key: "stock",
+      width: "10%",
+      ...getColumnSearchProps("stock"),
+      sorter: (a, b) => a.stock - b.stock,
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Manufacturer</div>
+          <Input
+            placeholder="Search manufacturer"
+            value={searchText.manufacturer}
+            onChange={(e) => handleSearch(e, "manufacturer")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "manufacturer",
+      key: "manufacturer",
+      width: "20%",
+      ...getColumnSearchProps("manufacturer"),
+      sorter: (a, b) => a.manufacturer.localeCompare(b.manufacturer),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Expiry Date</div>
+          <Input
+            placeholder="Search expiry date"
+            value={searchText.expiry_date}
+            onChange={(e) => handleSearch(e, "expiry_date")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      width: "10%",
+      ...getColumnSearchProps("expiry_date"),
+      sorter: (a: Item, b: Item) =>
+        new Date(a.expiry_date).getTime() - new Date(b.expiry_date).getTime(),
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Batch Number</div>
+          <Input
+            placeholder="Search batch number"
+            value={searchText.batch_number}
+            onChange={(e) => handleSearch(e, "batch_number")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "batch_number",
+      key: "batch_number",
+      width: "10%",
+      ...getColumnSearchProps("batch_number"),
+      sorter: (a, b) => a.batch_number.localeCompare(b.batch_number),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Aisle Location</div>
+          <Input
+            placeholder="Search aisle location"
+            value={searchText.aisle_location}
+            onChange={(e) => handleSearch(e, "aisle_location")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "aisle_location",
+      key: "aisle_location",
+      width: "10%",
+      ...getColumnSearchProps("aisle_location"),
+      sorter: (a, b) => a.aisle_location.localeCompare(b.aisle_location),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Prescription Required</div>
+          <Input
+            placeholder="Search prescription required"
+            value={searchText.prescription_required}
+            onChange={(e) => handleSearch(e, "prescription_required")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "prescription_required",
+      key: "prescription_required",
+      width: "10%",
+      ...getColumnSearchProps("prescription_required"),
+      sorter: (a, b) => a.prescription_required - b.prescription_required,
+      sortDirections: ["ascend", "descend"],
+      render: (text) => (
+        <span style={{ color: text ? "red" : "blue" }}>
+          {text ? "True" : "False"}
+        </span>
+      ),
+    },
+    {
+      title: "Actions",
+      width: "10%",
+      fixed: "right",
+      key: "actions",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => handleEdit(record)}
+          />
+          <Button
+            type="link"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record)}
+          />
+        </Space>
+      ),
+    },
   ];
 
   if (!items) {
