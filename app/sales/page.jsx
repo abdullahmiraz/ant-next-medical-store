@@ -1,8 +1,12 @@
 import React from "react";
+import Sales from "../../components/Sales/Sales";
 
 const SalesPage = () => {
-  return <div>SalesPage</div>;
-  
-};  
+  return (
+    <>
+      <Sales />
+    </>
+  );
+};
 
-export default SalesPage;  
+export default SalesPage;

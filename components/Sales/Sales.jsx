@@ -1,3 +1,4 @@
+"use client";
 import { Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -64,11 +65,27 @@ const SalesManagement = () => {
       ),
   });
 
-  const filteredSales = sales.filter((sale) =>
-    sale.customerName
-      .toLowerCase()
-      .includes(searchText.customerName.toLowerCase())
-  );
+  const filteredSales = sales?.filter((sale) => {
+    const { customer, order } = sale ?? {};
+    const { name, email, phone, address } = customer ?? {};
+    const { orderId, date, total, status, items } = order ?? {};
+
+    // Check if any of the fields match the search text
+    return (
+      name?.toLowerCase().includes(searchText.name?.toLowerCase()) ||
+      email?.toLowerCase().includes(searchText.email?.toLowerCase()) ||
+      phone?.toLowerCase().includes(searchText.phone?.toLowerCase()) ||
+      address?.toLowerCase().includes(searchText.address?.toLowerCase()) ||
+      orderId?.toLowerCase().includes(searchText.orderId?.toLowerCase()) ||
+      date?.includes(searchText.date) ||
+      total?.toString().includes(searchText.total) ||
+      status?.toLowerCase().includes(searchText.status?.toLowerCase()) ||
+      // Check if any item name matches the search text
+      items?.some((item) =>
+        item.name?.toLowerCase().includes(searchText.item?.toLowerCase())
+      )
+    );
+  });
 
   const columns = [
     {
@@ -103,11 +120,11 @@ const SalesManagement = () => {
           />
         </div>
       ),
-      dataIndex: "customerName",
+      dataIndex: ["customer", "name"], // Accessing nested value
       key: "customerName",
       width: "20%",
       ...getColumnSearchProps("customerName"),
-      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      sorter: (a, b) => a.customer.name.localeCompare(b.customer.name), // Sorting by nested value
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -122,11 +139,11 @@ const SalesManagement = () => {
           />
         </div>
       ),
-      dataIndex: "orderId",
+      dataIndex: ["order", "orderId"], // Accessing nested value
       key: "orderId",
       width: "20%",
       ...getColumnSearchProps("orderId"),
-      sorter: (a, b) => a.orderId.localeCompare(b.orderId),
+      sorter: (a, b) => a.order.orderId.localeCompare(b.order.orderId), // Sorting by nested value
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -141,11 +158,11 @@ const SalesManagement = () => {
           />
         </div>
       ),
-      dataIndex: "orderDate",
+      dataIndex: ["order", "date"], // Accessing nested value
       key: "orderDate",
       width: "10%",
       ...getColumnSearchProps("orderDate"),
-      sorter: (a, b) => new Date(a.orderDate) - new Date(b.orderDate),
+      sorter: (a, b) => new Date(a.order.date) - new Date(b.order.date), // Sorting by nested value
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -160,11 +177,11 @@ const SalesManagement = () => {
           />
         </div>
       ),
-      dataIndex: "totalAmount",
+      dataIndex: ["order", "total"], // Accessing nested value
       key: "totalAmount",
       width: "10%",
       ...getColumnSearchProps("totalAmount"),
-      sorter: (a, b) => a.totalAmount - b.totalAmount,
+      sorter: (a, b) => a.order.total - b.order.total, // Sorting by nested value
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -179,11 +196,11 @@ const SalesManagement = () => {
           />
         </div>
       ),
-      dataIndex: "status",
+      dataIndex: ["order", "status"], // Accessing nested value
       key: "status",
       width: "10%",
       ...getColumnSearchProps("status"),
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      sorter: (a, b) => a.order.status.localeCompare(b.order.status), // Sorting by nested value
       sortDirections: ["ascend", "descend"],
     },
     {
@@ -204,6 +221,7 @@ const SalesManagement = () => {
       ),
     },
   ];
+  
 
   if (!sales) {
     return <div>Loading...</div>;
