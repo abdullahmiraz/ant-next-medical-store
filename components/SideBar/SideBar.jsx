@@ -31,22 +31,22 @@ const SideBar = () => {
           <Link href="/dashboard">Dashboard</Link>
         </Menu.Item>
         <Menu.Item key="2" icon={<LaptopOutlined />}>
-          <Link href="/inventory">Inventory</Link>
+          <Link href="/dashboard/inventory">Inventory</Link>
         </Menu.Item>
 
         <Menu.Item key="8" icon={<UserOutlined />}>
-          <Link href="/user-management">User Management</Link>
+          <Link href="/dashboard/user-management">User Management</Link>
         </Menu.Item>
         <Menu.Item key="5" icon={<BoxPlotOutlined />}>
-          <Link href="/sales">Sales</Link>
+          <Link href="/dashboard/sales">Sales</Link>
         </Menu.Item>
 
         <Menu.Item key="9" icon={<NotificationOutlined />}>
-          <Link href="/reports"> Reports</Link>
+          <Link href="/dashboard/reports"> Reports</Link>
         </Menu.Item>
 
         <Menu.Item key="11" icon={<LaptopOutlined />}>
-          <Link href="/settings">Settings</Link>
+          <Link href="/dashboard/settings">Settings</Link>
         </Menu.Item>
       </Menu>
 

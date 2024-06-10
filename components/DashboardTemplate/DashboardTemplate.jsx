@@ -13,7 +13,7 @@ const DashboardTemplate = ({ children }) => {
   } = theme.useToken();
   return (
     <Layout>
-      <Navbar />
+      {/* <Navbar /> */}
       <Layout>
         <SideBar />
 
