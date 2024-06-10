@@ -31,7 +31,7 @@ const Navbar = () => {
             minWidth: 0,
           }}
         />
-        <Link href="/userpage">
+        <Link href="/userprofile">
           <UserOutlined
             style={{
               color: "#fff",

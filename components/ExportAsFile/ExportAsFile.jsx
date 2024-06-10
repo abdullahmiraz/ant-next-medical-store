@@ -1,35 +1,18 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  SearchOutlined,
-  DownloadOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
-import { Button, Dropdown, Input, Menu, Space, Table, Tooltip } from "antd"; // Import Tooltip
-import { useRef, useState } from "react";
-import { findDOMNode } from "react-dom";
-import ReactDOM from "react-dom";
-import Highlighter from "react-highlight-words";
-import EditModal from "../EditModal/EditModal";
-import { DownloadTableExcel } from "react-export-table-to-excel";
-import * as XLSX from "xlsx"; // Import the XLSX library
-import jsPDF from "jspdf";
+import { Table } from "antd";
 import "jspdf-autotable";
-import dayjs from "dayjs";
-import styles from "./ExportAsFile.module.css"; // Import CSS module
-import ExportBtn from "./ExportBtn";
+import { useRef } from "react";
 import TaskBar from "../TaskBar/TaskBar";
-//
-const ExportAsFile = ({ tableCol, filteredTodos }) => {
-  const tableRef = useRef(null); // Reference for table
+import styles from "./ExportAsFile.module.css";
+const ExportAsFile = ({ columns, filteredItems }) => {
+  const tableRef = useRef(null);
 
   return (
     <div>
       <TaskBar tableRef={tableRef} />
       <div ref={tableRef}>
         <Table
-          columns={tableCol}
-          dataSource={filteredTodos}
+          columns={columns}
+          dataSource={filteredItems}
           rowClassName={styles.customRow}
           pagination={true}
           scroll={{

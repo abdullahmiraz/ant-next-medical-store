@@ -34,32 +34,17 @@ const SideBar = () => {
           <Link href="/inventory">Inventory</Link>
         </Menu.Item>
 
-        <SubMenu
-          key="sub2"
-          icon={<BoxPlotOutlined />}
-          title="Sales and Billing"
-        >
-          <Menu.Item key="5">
-            <Link href="/sales/new-sale">New Sale</Link>
-          </Menu.Item>
-          <Menu.Item key="6">
-            <Link href="/sales/invoice-management">Invoice Management</Link>
-          </Menu.Item>
-          <Menu.Item key="7">
-            <Link href="/sales/sales-reports">Sales Reports</Link>
-          </Menu.Item>
-        </SubMenu>
         <Menu.Item key="8" icon={<UserOutlined />}>
           <Link href="/user-management">User Management</Link>
         </Menu.Item>
-        <SubMenu key="sub3" icon={<NotificationOutlined />} title="Reports">
-          <Menu.Item key="9">
-            <Link href="/reports/inventory">Inventory Reports</Link>
-          </Menu.Item>
-          <Menu.Item key="10">
-            <Link href="/reports/sales">Sales Analytics</Link>
-          </Menu.Item>
-        </SubMenu>
+        <Menu.Item key="5" icon={<BoxPlotOutlined />}>
+          <Link href="/sales">Sales</Link>
+        </Menu.Item>
+
+        <Menu.Item key="9" icon={<NotificationOutlined />}>
+          <Link href="/reports"> Reports</Link>
+        </Menu.Item>
+
         <Menu.Item key="11" icon={<LaptopOutlined />}>
           <Link href="/settings">Settings</Link>
         </Menu.Item>

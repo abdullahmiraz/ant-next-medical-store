@@ -5,13 +5,30 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { Button, Input, Space } from "antd";
-import dayjs from "dayjs";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { getInventoryDetails } from "../../api";
 import EditModal from "../EditModal/EditModal";
 import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
-const MedicineList = ({ todos }) => {
+const MedicineList = () => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const itemsData = await getInventoryDetails();
+        setItems(itemsData);
+      } catch (error) {
+        console.error("Error fetching medical items:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(items);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editRecord, setEditRecord] = useState(null);
   const tableRef = useRef(null);
@@ -66,12 +83,12 @@ const MedicineList = ({ todos }) => {
       ),
   });
 
-  const filteredTodos = todos?.filter((todo) => {
+  const filteredItems = items?.filter((item) => {
     return (
-      todo.name.toLowerCase().includes(searchText.name.toLowerCase()) &&
-      todo.category.toLowerCase().includes(searchText.category.toLowerCase()) &&
-      todo.type.toLowerCase().includes(searchText.type.toLowerCase()) &&
-      todo.expiry_date
+      item.name.toLowerCase().includes(searchText.name.toLowerCase()) &&
+      item.category.toLowerCase().includes(searchText.category.toLowerCase()) &&
+      item.type.toLowerCase().includes(searchText.type.toLowerCase()) &&
+      item.expiry_date
         .toLowerCase()
         .includes(searchText.expiry_date.toLowerCase())
     );
@@ -81,7 +98,27 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Name</div>
+          <div className="text-center">id</div>
+          <Input
+            placeholder="Search id"
+            value={searchText.id}
+            onChange={(e) => handleSearch(e, "id")}
+            style={{ marginTop: 8 }}
+          />
+        </div>
+      ),
+      dataIndex: "id",
+      key: "id",
+      width: "5%",
+      fixed: "left",
+      ...getColumnSearchProps("id"),
+      sorter: (a, b) => String(a.id).localeCompare(String(b.id)),
+      sortDirections: ["ascend", "descend"],
+    },
+    {
+      title: (
+        <div>
+          <div className="text-center">Name</div>
           <Input
             placeholder="Search name"
             value={searchText.name}
@@ -101,7 +138,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Category</div>
+          <div className="text-center">Category</div>
           <Input
             placeholder="Search category"
             value={searchText.category}
@@ -120,7 +157,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Type</div>
+          <div className="text-center">Type</div>
           <Input
             placeholder="Search type"
             value={searchText.type}
@@ -139,7 +176,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Price</div>
+          <div className="text-center">Price</div>
           <Input
             placeholder="Search price"
             value={searchText.price}
@@ -158,7 +195,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Stock</div>
+          <div className="text-center">Stock</div>
           <Input
             placeholder="Search stock"
             value={searchText.stock}
@@ -177,7 +214,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Manufacturer</div>
+          <div className="text-center">Manufacturer</div>
           <Input
             placeholder="Search manufacturer"
             value={searchText.manufacturer}
@@ -196,7 +233,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Expiry Date</div>
+          <div className="text-center">Expiry Date</div>
           <Input
             placeholder="Search expiry date"
             value={searchText.expiry_date}
@@ -215,7 +252,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Batch Number</div>
+          <div className="text-center">Batch Number</div>
           <Input
             placeholder="Search batch number"
             value={searchText.batch_number}
@@ -234,7 +271,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Aisle Location</div>
+          <div className="text-center">Aisle Location</div>
           <Input
             placeholder="Search aisle location"
             value={searchText.aisle_location}
@@ -253,7 +290,7 @@ const MedicineList = ({ todos }) => {
     {
       title: (
         <div>
-          <div>Prescription Required</div>
+          <div className="text-center">Prescription Required</div>
           <Input
             placeholder="Search prescription required"
             value={searchText.prescription_required}
@@ -296,23 +333,15 @@ const MedicineList = ({ todos }) => {
     },
   ];
 
-  if (!todos) {
+  if (!items) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
       <div className=" ">
-        <ExportAsFile tableCol={columns} filteredTodos={filteredTodos} />
+        <ExportAsFile columns={columns} filteredItems={filteredItems} />
       </div>
-
-      {modalOpen && (
-        <EditModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          record={editRecord}
-        />
-      )}
     </>
   );
 };

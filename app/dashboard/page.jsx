@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
-    <div>Dashboard</div>
-  )
-}
+    <div>
+      <h1 className="font-bold text-center text-2xl underline">
+        Dashboard of Medicine Shop Management System
+      </h1>
+    </div>
+  );
+};
 
-export default Dashboard
+export default DashboardPage;
