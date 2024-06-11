@@ -15,23 +15,22 @@ const CarouselComp: React.FC = () => (
     <div>
       <div style={contentStyle}>
         <Image
-          src={
-            "https://www.lazzpharma.com/Content/ImageData/Banner/Orginal/6155262a-31d1-4546-8d86-352a0036762f/banner.webp"
-          }
+          src={"https://via.placeholder.com/300x200?text=Carousel Medicine"}
           alt="1"
-          layout="fill"
+          height={400}
+          width={800}
+          objectFit="cover"
         />
       </div>
     </div>
     <div>
       <div style={contentStyle}>
         <Image
-          src={
-            "https://www.lazzpharma.com/Content/ImageData/Banner/Orginal/6155262a-31d1-4546-8d86-352a0036762f/banner.webp"
-          }
+          src={"https://via.placeholder.com/300x200?text=Carousel Medicine"}
           alt="1"
-          layout="fill"
-          objectFit="contain"
+          height={400}
+          width={800}
+          objectFit="cover"
         />
       </div>
     </div>

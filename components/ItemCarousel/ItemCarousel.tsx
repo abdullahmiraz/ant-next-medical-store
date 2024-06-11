@@ -42,7 +42,7 @@ const ItemCarousel: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log(items);
+  // console.log(items);
 
   // Group items into sets of 4
   const groupedItems = items.reduce((acc, item, index) => {
@@ -55,9 +55,12 @@ const ItemCarousel: React.FC = () => {
   }, []);
 
   return (
-    <div className="my-6">
+    <div className="">
       {groupedItems.map((group, index) => (
-        <div key={index} className="flex">
+        <div
+          key={index}
+          className="flex gap-4 h-full mx-4 flex-wrap justify-evenly"
+        >
           {group.map((item) => (
             <ItemCard key={item.id} item={item} />
           ))}

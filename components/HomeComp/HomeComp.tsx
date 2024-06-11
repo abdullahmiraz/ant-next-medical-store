@@ -6,7 +6,7 @@ import ItemCard from "../ItemCard/ItemCard";
 import ItemCarousel from "../ItemCarousel/ItemCarousel";
 import CarouselComp from "../CarouselComp/CarouselComp";
 
-const HomePage = () => {
+const HomeComp = () => {
   return (
     <Layout>
       <CarouselComp />
@@ -15,4 +15,4 @@ const HomePage = () => {
     </Layout>
   );
 };
-export default HomePage;
+export default HomeComp;

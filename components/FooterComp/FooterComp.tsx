@@ -7,6 +7,7 @@ const FooterComp = () => {
       style={{
         textAlign: "center",
         background: "transparent",
+        marginTop: "",
       }}
     >
       ATI Limited ©{new Date().getFullYear()}

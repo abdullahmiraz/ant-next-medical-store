@@ -10,17 +10,20 @@ const CustomCard = styled.div`
   width: 300px;
   border: 1px solid #e8e8e8;
   border-radius: 5px;
-  overflow: hidden;
-  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: max-content; /* Set a fixed height for consistency */
 `;
 
 const ImageContainer = styled.div`
-  height: 50%;
+  height: 40%; /* Set a fixed height for the image */
   overflow: hidden;
 `;
 
 const ItemDetails = styled.div`
   padding: 12px;
+  flex-grow: 1; /* Allow the item details to grow to fill space */
 `;
 
 const CustomButton = styled(Button)`
@@ -31,7 +34,8 @@ const CustomButton = styled(Button)`
 const ItemCard = ({ item }) => (
   <CustomCard>
     <ImageContainer>
-      <Image src={item.image} alt={item.name} width={300} height={300} />
+      <Image src={item.image} alt={item.name} width={300} height={200} />{" "}
+      {/* Ensure height matches the container */}
     </ImageContainer>
     <ItemDetails>
       <Title level={5}>{item.name}</Title>
