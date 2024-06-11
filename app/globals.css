@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ant-table-wrapper .ant-table-tbody > tr > td {
+  transition: background 6s, border-color 6s;
+}

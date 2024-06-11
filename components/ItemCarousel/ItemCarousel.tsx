@@ -10,6 +10,7 @@ const contentStyle: React.CSSProperties = {
   textAlign: "center",
   background: "#364d79",
 };
+
 interface Item {
   id: number;
   name: string;
@@ -25,7 +26,7 @@ interface Item {
   image: string;
 }
 
-const ItemCarousel: React.FC = () => { 
+const ItemCarousel: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
@@ -43,18 +44,26 @@ const ItemCarousel: React.FC = () => {
 
   console.log(items);
 
+  // Group items into sets of 4
+  const groupedItems = items.reduce((acc, item, index) => {
+    const groupIndex = Math.floor(index / 4);
+    if (!acc[groupIndex]) {
+      acc[groupIndex] = [];
+    }
+    acc[groupIndex].push(item);
+    return acc;
+  }, []);
+
   return (
-    <Carousel arrows infinite className="my-6">
-      {items ? (
-        items.map((item) => (
-          <div key={item.id}>
-            <ItemCard item={item} />
-          </div>
-        ))
-      ) : (
-        <div>Loading...</div>
-      )}
-    </Carousel>
+    <div className="my-6">
+      {groupedItems.map((group, index) => (
+        <div key={index} className="flex">
+          {group.map((item) => (
+            <ItemCard key={item.id} item={item} />
+          ))}
+        </div>
+      ))}
+    </div>
   );
 };
 

@@ -11,7 +11,7 @@ const contentStyle: React.CSSProperties = {
 };
 
 const CarouselComp: React.FC = () => (
-  <Carousel autoplay className="my-6">
+  <Carousel arrows autoplay className="my-6">
     <div>
       <div style={contentStyle}>
         <Image
@@ -20,18 +20,20 @@ const CarouselComp: React.FC = () => (
           }
           alt="1"
           layout="fill"
-          objectFit="cover"
         />
       </div>
     </div>
     <div>
-      <h3 style={contentStyle}>2</h3>
-    </div>
-    <div>
-      <h3 style={contentStyle}>3</h3>
-    </div>
-    <div>
-      <h3 style={contentStyle}>4</h3>
+      <div style={contentStyle}>
+        <Image
+          src={
+            "https://www.lazzpharma.com/Content/ImageData/Banner/Orginal/6155262a-31d1-4546-8d86-352a0036762f/banner.webp"
+          }
+          alt="1"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
     </div>
   </Carousel>
 );

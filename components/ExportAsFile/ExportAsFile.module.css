@@ -1,14 +1,3 @@
-.customRow {
-  border: 1px solid red !important;
-}
-
-.customRow:hover {
-  background-color: #78caf0 !important;
-}
-
 .ant-table-row:hover {
-  background-color: #00b445 !important;
-}
-.ant-table-thead th {
-  text-align: center;
+  background-color: lightblue;
 }

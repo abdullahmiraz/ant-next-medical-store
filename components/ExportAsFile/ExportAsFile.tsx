@@ -1,13 +1,26 @@
 import { Table } from "antd";
-import "jspdf-autotable";
 import { useRef } from "react";
 import TaskBar from "../TaskBar/TaskBar";
-import styles from "./ExportAsFile.module.css";
+import styled from "styled-components";
 
 interface Props {
   columns: any[];
   filteredItems: any[];
 }
+
+const StyledTable = styled(Table)`
+   
+  .ant-table-measure-row:hover {
+    background-color: red;
+  }
+  .ant-table-row:hover {
+    background-color: red;
+  }
+  ant-table-wrapper .ant-table-tbody >tr >td {
+    transition: none;
+    
+}
+`;
 
 const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -16,11 +29,10 @@ const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
     <div>
       <TaskBar tableRef={tableRef} />
       <div ref={tableRef}>
-        <Table
+        <StyledTable
           columns={columns}
           dataSource={filteredItems}
-          rowClassName={styles.customRow}
-          pagination={{ pageSize: 10 }} // Set pagination to true with configuration
+          pagination={{ pageSize: 10 }}
           scroll={{
             x: 1300,
           }}

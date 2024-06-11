@@ -31,7 +31,7 @@ const CustomButton = styled(Button)`
 const ItemCard = ({ item }) => (
   <CustomCard>
     <ImageContainer>
-      <Image src={item.image} alt={item.name} width={300} height={200} />
+      <Image src={item.image} alt={item.name} width={300} height={300} />
     </ImageContainer>
     <ItemDetails>
       <Title level={5}>{item.name}</Title>
