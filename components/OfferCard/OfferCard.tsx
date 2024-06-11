@@ -15,6 +15,7 @@ const OfferCard: React.FC = () => {
     justifyContent: "space-between",
     gap: "16px",
     flexWrap: "wrap",
+    margin: "1rem",
   };
 
   const colStyle: React.CSSProperties = {
@@ -37,13 +38,36 @@ const OfferCard: React.FC = () => {
         </StyledCard>
       </div>
       <div style={colStyle}>
-        <StyledCard title="Card title" bordered={false}>
-          Card content
+        <StyledCard>
+          <Image
+            src="https://www.lazzpharma.com/Content/ImageData/Gallery/2fd05571-5f83-422b-935b-43c13649adf4/Category-Slider.webp"
+            width={400}
+            alt="img"
+            objectFit="cover"
+            height={200}
+          />
         </StyledCard>
       </div>
       <div style={colStyle}>
-        <StyledCard title="Card title" bordered={false}>
-          Card content
+        <StyledCard>
+          <Image
+            src="https://www.lazzpharma.com/Content/ImageData/Gallery/2fd05571-5f83-422b-935b-43c13649adf4/Category-Slider.webp"
+            width={400}
+            alt="img"
+            objectFit="cover"
+            height={200}
+          />
+        </StyledCard>
+      </div>
+      <div style={colStyle}>
+        <StyledCard>
+          <Image
+            src="https://www.lazzpharma.com/Content/ImageData/Gallery/2fd05571-5f83-422b-935b-43c13649adf4/Category-Slider.webp"
+            width={400}
+            alt="img"
+            objectFit="cover"
+            height={200}
+          />
         </StyledCard>
       </div>
     </div>
