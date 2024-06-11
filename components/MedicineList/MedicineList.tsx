@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Input, Space } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
+import { Button, Input, Space } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { getInventoryDetails } from "../../api";
-import EditModal from "../EditModal/EditModal";
 import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
 interface Item {
@@ -24,6 +23,7 @@ interface Item {
   batch_number: string;
   aisle_location: string;
   prescription_required: boolean;
+  image: string;
 }
 
 const MedicineList: React.FC = () => {
@@ -33,7 +33,7 @@ const MedicineList: React.FC = () => {
     const fetchData = async () => {
       try {
         const itemsData = await getInventoryDetails();
-        setItems(itemsData);
+        setItems(itemsData.medicine);
       } catch (error) {
         console.error("Error fetching medical items:", error);
       }

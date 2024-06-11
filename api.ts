@@ -1,11 +1,16 @@
 const baseUrl = `http://localhost:3002`;
 
-export const getInventoryDetails = async (): Promise<any[]> => {
-  const res = await fetch(`${baseUrl}/inventory`, { cache: "no-store" });
-  const medicineList = await res.json();
-  return medicineList;
+export const getInventoryDetails = async () => {
+  const res = await fetch(`${baseUrl}/product_categories/`, {
+    cache: "no-store",
+  });
+  const productCategories = await res.json();
+  const medicineProducts = productCategories;
+  // const medicineProducts = productCategories.medicine;
+  return medicineProducts;
 };
 
+ 
 export const getAllUsersDetails = async (): Promise<any[]> => {
   const res = await fetch(`${baseUrl}/users`, { cache: "no-store" });
   const usersList = await res.json();
