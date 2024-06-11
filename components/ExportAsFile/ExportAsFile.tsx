@@ -9,17 +9,15 @@ interface Props {
 }
 
 const StyledTable = styled(Table)`
-   
   .ant-table-measure-row:hover {
-    background-color: red;
+    background-color: lightblue;
   }
   .ant-table-row:hover {
-    background-color: red;
+    background-color: lightblue;
   }
-  ant-table-wrapper .ant-table-tbody >tr >td {
+  ant-table-wrapper .ant-table-tbody > tr > td {
     transition: none;
-    
-}
+  }
 `;
 
 const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
