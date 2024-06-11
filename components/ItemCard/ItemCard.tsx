@@ -1,21 +1,18 @@
 import React from "react";
 import { Button, Carousel, Card } from "antd";
 import Image from "next/image";
+import { styled } from "styled-components";
 
 const { Meta } = Card;
 
 const contentStyle: React.CSSProperties = {
   display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexWrap: "wrap",
-  gap: "16px",
-  padding: "16px",
+  backgroundColor: "red",
 };
 
 const cardStyle: React.CSSProperties = {
   width: 300,
-  height: 400,
+  // height: 400,
   margin: "2rem",
   display: "flex",
   flexDirection: "column",
@@ -29,74 +26,114 @@ const imageStyle: React.CSSProperties = {
   overflow: "hidden",
 };
 
+const StyledCard = styled(Card)`
+  .ant-card-body {
+    padding: 0;
+  }
+`;
 const ItemCard: React.FC = () => (
   <Carousel arrows infinite autoplay>
     <div style={contentStyle}>
-      <Card style={cardStyle}>
-        <div style={imageStyle}>
-          <Image
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <Button type="primary" style={{ marginTop: "16px" }}>
-          Add to Bag
-        </Button>
-      </Card>
-      <Card style={cardStyle}>
-        <div style={imageStyle}>
-          <Image
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <Button type="primary" style={{ marginTop: "16px" }}>
-          Add to Bag
-        </Button>
-      </Card>
-      <Card style={cardStyle}>
-        <div style={imageStyle}>
-          <Image
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <Button type="primary" style={{ marginTop: "16px" }}>
-          Add to Bag
-        </Button>
-      </Card>
-      <Card style={cardStyle}>
-        <div style={imageStyle}>
-          <Image
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <Button type="primary" style={{ marginTop: "16px" }}>
-          Add to Bag
-        </Button>
-      </Card>
-      <Card style={cardStyle}>
-        <div style={imageStyle}>
-          <Image
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            layout="fill"
-            objectFit="cover"
-          />
-        </div>
-        <Button type="primary" style={{ marginTop: "16px" }}>
-          Add to Bag
-        </Button>
-      </Card>
+      <div style={cardStyle}>
+        <StyledCard>
+          <div style={imageStyle}>
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div>
+            <h1>Medicine Name _ Power</h1>
+            <p>Main Type</p>
+            <h2>Price</h2>
+          </div>
+          <Button className="my-2 w-full" type="primary">
+            Add to Bag
+          </Button>
+        </StyledCard>
+      </div>
+      <div style={cardStyle}>
+        <StyledCard>
+          <div style={imageStyle}>
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div>
+            <h1>Medicine Name _ Power</h1>
+            <p>Main Type</p>
+            <h2>Price</h2>
+          </div>
+          <Button className="my-2 w-full" type="primary">
+            Add to Bag
+          </Button>
+        </StyledCard>
+      </div>
+      <div style={cardStyle}>
+        <StyledCard>
+          <div style={imageStyle}>
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div>
+            <h1>Medicine Name _ Power</h1>
+            <p>Main Type</p>
+            <h2>Price</h2>
+          </div>
+          <Button className="my-2 w-full" type="primary">
+            Add to Bag
+          </Button>
+        </StyledCard>
+      </div>
+      <div style={cardStyle}>
+        <StyledCard>
+          <div style={imageStyle}>
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div>
+            <h1>Medicine Name _ Power</h1>
+            <p>Main Type</p>
+            <h2>Price</h2>
+          </div>
+          <Button className="my-2 w-full" type="primary">
+            Add to Bag
+          </Button>
+        </StyledCard>
+      </div>
+      <div style={cardStyle}>
+        <StyledCard>
+          <div style={imageStyle}>
+            <Image
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+          <div>
+            <h1>Medicine Name _ Power</h1>
+            <p>Main Type</p>
+            <h2>Price</h2>
+          </div>
+          <Button className="my-2 w-full" type="primary">
+            Add to Bag
+          </Button>
+        </StyledCard>
+      </div>
     </div>
   </Carousel>
 );
