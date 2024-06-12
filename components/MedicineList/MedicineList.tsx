@@ -64,12 +64,12 @@ const MedicineList: React.FC = () => {
     category: "",
     type: "",
     expiry_date: "",
-    price: "", // Add price with string type
-    stock: "", // Add stock with string type
+    price: "",
+    stock: "",
     manufacturer: "",
     batch_number: "",
     aisle_location: "",
-    prescription_required: "", // Add prescription_required with string type
+    prescription_required: "",
   });
 
   const handleSearch = (
