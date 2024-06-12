@@ -18,6 +18,9 @@ const StyledTable = styled(Table)`
   ant-table-wrapper .ant-table-tbody > tr > td {
     transition: none;
   }
+  .ant-table-row .ant-table-row-level-0 {
+    border: 1px solid red !important;
+  }
 `;
 
 const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
