@@ -9,3 +9,10 @@
 .ant-table-cell {
   padding: 6px !important;
 }
+
+.taskform-input-group input {
+  /* width: 120%; */
+}
+.taskform-input-group > * {
+  width: 46%;
+}

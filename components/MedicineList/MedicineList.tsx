@@ -9,6 +9,7 @@ import { Button, Input, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { getInventoryDetails } from "../../api";
+import EditModal from "../EditModal/EditModal";
 import ExportAsFile from "../ExportAsFile/ExportAsFile";
 
 interface Item {
@@ -368,6 +369,14 @@ const MedicineList: React.FC = () => {
       <div className=" ">
         <ExportAsFile columns={columns} filteredItems={filteredItems} />
       </div>
+
+      {modalOpen && (
+        <EditModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          record={editRecord}
+        />
+      )}
     </>
   );
 };
