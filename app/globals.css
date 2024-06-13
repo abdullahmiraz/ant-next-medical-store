@@ -9,6 +9,9 @@
   width: 46%;
 }
 
+.ant-table-thead input {
+  /* width: max-content !important; */
+}
 .ant-table-cell-row-hover {
   background-color: lightblue !important;
 }

@@ -276,7 +276,7 @@ const SalesManagement: React.FC = () => {
   return (
     <>
       <div className=" ">
-        <ExportAsFile columns={columns} filteredItems={filteredSales} />
+        {/* <ExportAsFile columns={columns} filteredItems={filteredSales} /> */}
       </div>
     </>
   );

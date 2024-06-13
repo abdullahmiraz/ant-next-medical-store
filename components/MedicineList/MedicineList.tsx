@@ -1,18 +1,13 @@
 "use client";
-
-import {
-  DeleteOutlined,
-  EditOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import { Button, Input, Space } from "antd";
-import React, { useEffect, useRef, useState } from "react";
-import Highlighter from "react-highlight-words";
-import { getInventoryDetails } from "../../api";
+import React, { Suspense, useEffect, useState } from "react";
+import { Button, Input, Modal, Space, Table, message } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import type { TableColumnsType } from "antd";
+import { getInventoryDetails, updateProduct } from "../../api";
 import EditModal from "../EditModal/EditModal";
-import ExportAsFile from "../ExportAsFile/ExportAsFile";
+import TaskBar from "../TaskBar/TaskBar";
 
-interface Item {
+export interface Item {
   id: any;
   name: string;
   category: string;
@@ -29,12 +24,19 @@ interface Item {
 
 const MedicineList: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
+  const [filteredItems, setFilteredItems] = useState<Item[]>([]);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [filters, setFilters] = useState<{ [key: string]: string }>({});
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editItem, setEditItem] = useState<Item | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const itemsData = await getInventoryDetails();
         setItems(itemsData.medicine);
+        setFilteredItems(itemsData.medicine);
       } catch (error) {
         console.error("Error fetching medical items:", error);
       }
@@ -43,341 +45,204 @@ const MedicineList: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log(items);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editRecord, setEditRecord] = useState<Item | null>(null);
-  const tableRef = useRef(null);
-
-  const handleEdit = (record: Item) => {
-    setEditRecord(record);
-    setModalOpen(true);
-  };
-
-  const handleDelete = (record: Item) => {
-    alert("Deleted record:" + record);
-  };
-
-  const [searchText, setSearchText] = useState({
-    id: "",
-    name: "",
-    category: "",
-    type: "",
-    expiry_date: "",
-    price: "",
-    stock: "",
-    manufacturer: "",
-    batch_number: "",
-    aisle_location: "",
-    prescription_required: "",
-  });
-
-  const handleSearch = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    dataIndex: string
+  const onSelectChange = (
+    selectedRowKeys: React.Key[],
+    selectedRows: Item[]
   ) => {
-    const value = e.target.value;
-    setSearchText((prevState) => ({
-      ...prevState,
-      [dataIndex]: value,
+    setSelectedRowKeys(selectedRowKeys);
+    setSelectedRows(selectedRows.map((row) => row.id));
+  };
+
+  const handleEdit = (item: Item) => {
+    setEditItem(item);
+    setEditModalVisible(true);
+  };
+
+  const handleSaveEdit = (updatedItem: Item) => {
+    const updatedItems = items.map((item) =>
+      item.id === updatedItem.id ? updatedItem : item
+    );
+    setItems(updatedItems);
+    setEditModalVisible(false);
+    message.success("Item updated successfully");
+  };
+
+  const saveEditedItem = async () => {
+    try {
+      if (!editItem) return;
+
+      await updateProduct(editItem.id, editItem); // Assuming updateProduct is defined correctly
+
+      message.success("Item updated successfully");
+
+      // Update local items state with edited item
+      setItems((prevItems) =>
+        prevItems.map((item) => (item.id === editItem.id ? editItem : item))
+      );
+
+      setEditModalVisible(false);
+    } catch (error) {
+      console.error("Failed to update item:", error);
+      message.error("Failed to update item. Please try again.");
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this item?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          // Call your API to delete the item
+          // await deleteItemById(id); // Implement this function
+          const updatedItems = items.filter((item) => item.id !== id);
+          setItems(updatedItems);
+          message.success("Item deleted successfully");
+        } catch (error) {
+          message.error("Failed to delete the item");
+        }
+      },
+      onCancel() {
+        console.log("Delete cancelled");
+      },
+    });
+  };
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: value,
     }));
   };
 
-  const getColumnSearchProps = (dataIndex: string) => ({
-    filterDropdown: false,
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined
-        style={{
-          color: searchText[dataIndex] ? "#1677ff" : undefined,
-        }}
-      />
-    ),
-    render: (text: string) =>
-      searchText[dataIndex] ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: "#ffc069",
-            padding: 0,
-          }}
-          searchWords={[searchText[dataIndex]]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : (
-        text
-      ),
-  });
+  useEffect(() => {
+    let filteredData = items;
 
-  const filteredItems = items?.filter((item) => {
-    return (
-      item?.name.toLowerCase().includes(searchText.name.toLowerCase()) &&
-      item?.category
-        .toLowerCase()
-        .includes(searchText.category.toLowerCase()) &&
-      item?.type.toLowerCase().includes(searchText.type.toLowerCase()) &&
-      item?.expiry_date
-        .toLowerCase()
-        .includes(searchText.expiry_date.toLowerCase())
-    );
-  });
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
+        filteredData = filteredData.filter((item) =>
+          item[key]
+            .toString()
+            .toLowerCase()
+            .includes(filters[key].toLowerCase())
+        );
+      }
+    });
 
-  const columns = [
-    {
-      title: (
-        <div>
-          <div className="text-center">id</div>
-          <Input
-            placeholder="Search id"
-            value={searchText.id}
-            onChange={(e) => handleSearch(e, "id")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "id",
-      key: "id",
-      width: "5%",
-      fixed: "left",
-      ...getColumnSearchProps("id"),
-      sorter: (a, b) => String(a.id).localeCompare(String(b.id)),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Name</div>
-          <Input
-            placeholder="Search name"
-            value={searchText.name}
-            onChange={(e) => handleSearch(e, "name")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "name",
-      key: "name",
-      width: "20%",
-      fixed: "left",
-      ...getColumnSearchProps("name"),
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Category</div>
-          <Input
-            placeholder="Search category"
-            value={searchText.category}
-            onChange={(e) => handleSearch(e, "category")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "category",
-      key: "category",
-      width: "10%",
-      ...getColumnSearchProps("category"),
-      sorter: (a, b) => a.category.localeCompare(b.category),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Type</div>
-          <Input
-            placeholder="Search type"
-            value={searchText.type}
-            onChange={(e) => handleSearch(e, "type")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "type",
-      key: "type",
-      width: "10%",
-      ...getColumnSearchProps("type"),
-      sorter: (a: Item, b: Item) => a.type.localeCompare(String(b.type)),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Price</div>
-          <Input
-            placeholder="Search price"
-            value={searchText.price}
-            onChange={(e) => handleSearch(e, "price")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "price",
-      key: "price",
-      width: "10%",
-      ...getColumnSearchProps("price"),
-      sorter: (a, b) => a.price - b.price,
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Stock</div>
-          <Input
-            placeholder="Search stock"
-            value={searchText.stock}
-            onChange={(e) => handleSearch(e, "stock")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "stock",
-      key: "stock",
-      width: "10%",
-      ...getColumnSearchProps("stock"),
-      sorter: (a, b) => a.stock - b.stock,
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Manufacturer</div>
-          <Input
-            placeholder="Search manufacturer"
-            value={searchText.manufacturer}
-            onChange={(e) => handleSearch(e, "manufacturer")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "manufacturer",
-      key: "manufacturer",
-      width: "20%",
-      ...getColumnSearchProps("manufacturer"),
-      sorter: (a, b) => a.manufacturer.localeCompare(b.manufacturer),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Expiry Date</div>
-          <Input
-            placeholder="Search expiry date"
-            value={searchText.expiry_date}
-            onChange={(e) => handleSearch(e, "expiry_date")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "expiry_date",
-      key: "expiry_date",
-      width: "10%",
-      ...getColumnSearchProps("expiry_date"),
-      sorter: (a: Item, b: Item) =>
-        new Date(a.expiry_date).getTime() - new Date(b.expiry_date).getTime(),
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Batch Number</div>
-          <Input
-            placeholder="Search batch number"
-            value={searchText.batch_number}
-            onChange={(e) => handleSearch(e, "batch_number")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "batch_number",
-      key: "batch_number",
-      width: "10%",
-      ...getColumnSearchProps("batch_number"),
-      sorter: (a, b) => a.batch_number.localeCompare(b.batch_number),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Aisle Location</div>
-          <Input
-            placeholder="Search aisle location"
-            value={searchText.aisle_location}
-            onChange={(e) => handleSearch(e, "aisle_location")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "aisle_location",
-      key: "aisle_location",
-      width: "10%",
-      ...getColumnSearchProps("aisle_location"),
-      sorter: (a, b) => a.aisle_location.localeCompare(b.aisle_location),
-      sortDirections: ["ascend", "descend"],
-    },
-    {
-      title: (
-        <div>
-          <div className="text-center">Prescription Required</div>
-          <Input
-            placeholder="Search prescription required"
-            value={searchText.prescription_required}
-            onChange={(e) => handleSearch(e, "prescription_required")}
-            style={{ marginTop: 8 }}
-          />
-        </div>
-      ),
-      dataIndex: "prescription_required",
-      key: "prescription_required",
-      width: "10%",
-      ...getColumnSearchProps("prescription_required"),
-      sorter: (a, b) => a.prescription_required - b.prescription_required,
-      sortDirections: ["ascend", "descend"],
-      render: (text) => (
-        <span style={{ color: text ? "red" : "blue" }}>
-          {text ? "True" : "False"}
-        </span>
-      ),
-    },
-    {
-      title: "Actions",
-      width: "10%",
-      fixed: "right",
-      key: "actions",
-      render: (text, record) => (
-        <Space size="middle">
-          <Button
-            type="link"
-            icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
-          />
-          <Button
-            type="link"
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record)}
-          />
-        </Space>
-      ),
-    },
-  ];
+    setFilteredItems(filteredData);
+  }, [filters, items]);
 
-  if (!items) {
-    return <div>Loading...</div>;
-  }
+  const generateColumns = (data: Item[]): TableColumnsType<Item> => {
+    if (!data || data.length === 0) return [];
+
+    const columns: TableColumnsType<Item> = [
+      {
+        title: "ID",
+        dataIndex: "id",
+        key: "id",
+        fixed: "left", // Fixed to the left
+        width: 50, // Set a fixed width for the ID column
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+        fixed: "left", // Fixed to the left
+        width: 150, // Set a fixed width for the Name column
+        render: (text: string, record: Item) => <span>{text}</span>,
+      },
+      ...Object.keys(data[0])
+        .filter((key) => key !== "id" && key !== "name" && key !== "image")
+        .map((key: string) => ({
+          title: (
+            <div>
+              <div>
+                {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}
+              </div>
+              <Input
+                placeholder={`Search ${key}`}
+                onChange={(e) => handleFilterChange(key, e.target.value)}
+                value={filters[key] || ""}
+              />
+            </div>
+          ),
+          dataIndex: key,
+          width: 150, // Set a fixed width for other columns
+          minWidth: 80, // Minimum width for other columns
+          key,
+          render: (text: string | number | boolean) =>
+            typeof text === "boolean" ? (text ? "Yes" : "No") : text,
+        })),
+      {
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        fixed: "right", // Fixed to the right
+        width: 100, // Set a fixed width for the Actions column
+        render: (_text: string, record: Item) => (
+          <Space>
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+            />
+            <Button
+              type="link"
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.id)}
+            />
+          </Space>
+        ),
+      },
+    ];
+
+    return columns;
+  };
 
   return (
-    <>
-      <div className=" ">
-        <ExportAsFile columns={columns} filteredItems={filteredItems} />
-      </div>
+    <div>
+      <TaskBar />
+      <Table
+        columns={generateColumns(items)}
+        dataSource={filteredItems} // Use the filtered data
+        rowKey={(record) => record.id}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: onSelectChange,
+        }}
+        onRow={(record: Item) => ({
+          onClick: () => {
+            if (selectedRows.includes(record.id)) {
+              setSelectedRows((prevSelectedRows) =>
+                prevSelectedRows.filter((rowId) => rowId !== record.id)
+              );
+            } else {
+              setSelectedRows((prevSelectedRows) => [
+                ...prevSelectedRows,
+                record.id,
+              ]);
+            }
+          },
+          style: {
+            background: selectedRows.includes(record.id) ? "lightblue" : "",
+          },
+        })}
+        scroll={{ x: "max-content", y: "max-content" }} // Adjust y value as needed
+      />
 
-      {modalOpen && (
-        <EditModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          record={editRecord}
-        />
-      )}
-    </>
+      <Suspense fallback={<div>Loading...</div>}>
+        {editItem && (
+          <EditModal
+            visible={editModalVisible}
+            item={editItem}
+            onSave={saveEditedItem}
+            onCancel={() => setEditModalVisible(false)}
+          />
+        )}
+      </Suspense>
+    </div>
   );
 };
 

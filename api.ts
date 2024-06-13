@@ -10,7 +10,26 @@ export const getInventoryDetails = async () => {
   return medicineProducts;
 };
 
- 
+export const updateProduct = async (
+  id: string,
+  updatedData: any
+): Promise<any> => {
+  const res = await fetch(`${baseUrl}/products/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedData),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to update product with id ${id}`);
+  }
+
+  const updatedProduct = await res.json();
+  return updatedProduct;
+};
+
 export const getAllUsersDetails = async (): Promise<any[]> => {
   const res = await fetch(`${baseUrl}/users`, { cache: "no-store" });
   const usersList = await res.json();
