@@ -20,25 +20,14 @@ const Navbar: React.FC = () => {
       }}
     >
       <Link href="/">
-        <Image width={40} height={40} src="/brand.png" alt="brand" />
-      </Link>
-      {/* <nav
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          gap: "1.3rem",
-        }}
-      >
-        <Link href="/">Home</Link>
-        <Link href="/request-order">Request Order</Link>
-        <Link href="/special-offers">Special Offers</Link>
-        <Link href="/branch-locations">Branch Locations</Link>
-        <Link href="/review">Review</Link>
-        <Link href="/gallery">Gallery</Link>
-        <Link href="/about-us">About Us</Link>
-        <Link href="/contact-us">Contact Us</Link>
-      </nav> */}
+        <Image
+          style={{ backgroundColor: "white" }}
+          width={140}
+          height={80}
+          src="/brand.png"
+          alt="brand"
+        />
+      </Link> 
       <Link href="/userprofile">
         <UserOutlined
           style={{

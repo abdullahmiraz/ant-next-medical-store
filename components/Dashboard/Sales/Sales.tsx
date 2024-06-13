@@ -4,8 +4,7 @@ import { Button, Input, Space } from "antd";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { getAllSalesDetails } from "../../api";
-import ExportAsFile from "../ExportAsFile/ExportAsFile";
+import { getAllSalesDetails } from "../../../api";
 
 interface Sale {
   id: number;

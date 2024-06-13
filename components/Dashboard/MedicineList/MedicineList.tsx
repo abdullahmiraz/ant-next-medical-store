@@ -3,25 +3,12 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Button, Input, Modal, Space, Table, message } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
-import { getInventoryDetails, updateProduct } from "../../api";
+
 import EditModal from "../EditModal/EditModal";
 import TaskBar from "../TaskBar/TaskBar";
 import ExportBtn from "../ExportAsFile/ExportBtn";
-
-export interface Item {
-  id: any;
-  name: string;
-  category: string;
-  type: string;
-  price: number;
-  stock: number;
-  manufacturer: string;
-  expiry_date: string;
-  batch_number: string;
-  aisle_location: string;
-  prescription_required: boolean;
-  image: string;
-}
+import { getInventoryDetails, updateProduct } from "../../../api";
+import { Item } from "./MedicineList.types";
 
 const MedicineList: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);

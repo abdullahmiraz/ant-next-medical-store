@@ -1,12 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "../components/Navbar/Navbar.tsx";
-import FooterComp from "../components/FooterComp/FooterComp";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Todo App",
+  title: "CRUD APP",
   description: "Nextjs CRUD App",
 };
 

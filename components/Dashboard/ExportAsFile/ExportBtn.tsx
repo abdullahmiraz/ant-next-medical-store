@@ -4,11 +4,7 @@ import { Button, Dropdown, Menu, Space } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
-import { Item } from "../MedicineList/MedicineList"; // Assuming Item interface is imported
-
-interface ExportBtnProps {
-  tableData: Item[];
-}
+import { ExportBtnProps } from "./ExportBtn.types";
 
 const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
   const handleExcelDownload = () => {
@@ -42,7 +38,21 @@ const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
       ]);
 
       doc.autoTable({
-        head: [["ID", "Name", "Category", "Type", "Price", "Stock", "Manufacturer", "Expiry Date", "Batch Number", "Aisle Location", "Prescription Required"]],
+        head: [
+          [
+            "ID",
+            "Name",
+            "Category",
+            "Type",
+            "Price",
+            "Stock",
+            "Manufacturer",
+            "Expiry Date",
+            "Batch Number",
+            "Aisle Location",
+            "Prescription Required",
+          ],
+        ],
         body: tableRows,
         startY: 10,
         styles: {

@@ -1,14 +1,8 @@
+import { Button, Form, Input, Modal, Switch, message } from "antd";
 import React, { useState } from "react";
-import { Modal, Form, Input, Button, message, Switch } from "antd";
-import { updateProduct } from "../../api"; // Adjust import path as per your file structure
-import { Item } from "./itemTypes"; // Import the Item interface
-
-interface EditModalProps {
-  visible: boolean;
-  item: Item; // Use the actual type of your item, imported from itemTypes
-  onSave: () => void;
-  onCancel: () => void;
-}
+import { Item } from "../MedicineList/MedicineList";
+import { updateProduct } from "../../../api";
+import { EditModalProps } from "./EditModal.types";
 
 const EditModal: React.FC<EditModalProps> = ({
   visible,

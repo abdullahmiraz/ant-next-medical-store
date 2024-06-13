@@ -3,12 +3,7 @@ import { useRef, useState } from "react";
 import TaskBar from "../TaskBar/TaskBar";
 import styled from "styled-components";
 
-interface Props {
-  columns: any[];
-  filteredItems: any[];
-}
-
-const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
+const ExportAsFile = ({ columns, filteredItems }) => {
   const [selectedRowKey, setSelectedRowKey] = useState<string | null>(null);
   const tableRef = useRef<HTMLDivElement>(null);
 
@@ -22,9 +17,9 @@ const ExportAsFile: React.FC<Props> = ({ columns, filteredItems }) => {
           pagination={{ pageSize: 10 }}
           scroll={{ x: 1300 }}
           onRow={(record) => ({
-            onClick: () => onRowClick(record),
+            // onClick: () => onRowClick(record),
           })}
-          rowClassName={rowClassName}
+          // rowClassName={rowClassName}
         />
       </div>
     </div>

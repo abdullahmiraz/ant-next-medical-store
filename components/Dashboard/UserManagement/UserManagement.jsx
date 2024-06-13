@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
 import ExportAsFile from "../ExportAsFile/ExportAsFile";
-import { getAllUsersDetails } from "../../api";
+import { getAllUsersDetails } from "../../../api";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

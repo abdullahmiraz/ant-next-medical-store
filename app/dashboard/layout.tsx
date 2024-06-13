@@ -1,6 +1,7 @@
-import React from "react";
-import DashboardTemplate from "../../components/DashboardTemplate/DashboardTemplate";
-import Navbar from "../../components/Navbar/Navbar";
+import DashboardTemplate from "../../components/Shared/DashboardTemplate/DashboardTemplate";
+import Navbar from "../../components/Shared/Navbar/Navbar";
+
+ 
 
 const layout = ({ children }) => {
   return (

@@ -1,9 +1,7 @@
 "use client";
 import { Layout, theme } from "antd";
-import React from "react";
+import SideBar from "../../Dashboard/SideBar/SideBar";
 import FooterComp from "../FooterComp/FooterComp";
-// import Navbar from "../Navbar/Navbar.tsx";
-import SideBar from "../SideBar/SideBar";
 
 const { Header, Content, Sider } = Layout;
 

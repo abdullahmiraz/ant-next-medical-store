@@ -12,10 +12,7 @@ function toArr(str: string | string[]): string[] {
   return Array.isArray(str) ? str : [str];
 }
 
-const MyFormItemGroup: FC<{
-  prefix: string | string[];
-  children: React.ReactNode;
-}> = ({ prefix, children }) => {
+const MyFormItemGroup = ({ prefix, children }) => {
   const prefixPath = useContext(MyFormItemContext);
   const concatPath = useMemo(
     () => [...prefixPath, ...toArr(prefix)],
@@ -29,7 +26,7 @@ const MyFormItemGroup: FC<{
   );
 };
 
-const MyFormItem: FC<MyFormItemProps> = ({ name, ...props }) => {
+const MyFormItem = ({ name, ...props }) => {
   const prefixPath = useContext(MyFormItemContext);
   const concatName =
     name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;

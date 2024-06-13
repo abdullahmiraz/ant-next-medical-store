@@ -1,5 +1,5 @@
 import React from "react";
-import Sales from "../../../components/Sales/Sales";
+import Sales from "../../../components/Dashboard/Sales/Sales";
 
 const SalesPage = () => {
   return (
