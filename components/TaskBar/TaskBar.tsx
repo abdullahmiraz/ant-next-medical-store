@@ -3,14 +3,19 @@ import InputModal from "../InputModal/InputModal";
 import ExportBtn from "../ExportAsFile/ExportBtn";
 import React, { useState } from "react"; // Import React and useState
 
-const TaskBar: React.FC<{ tableRef: React.RefObject<any> }> = ({ tableRef }) => { // Specify props type
+const TaskBar: React.FC = ({ tableRef, items }) => {
+  // Specify props type
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Initialize modalOpen state
 
   const handleToggleModal = () => {
     setModalOpen(!modalOpen);
   };
 
-  const onSearch = (value: string, _e: React.MouseEvent<HTMLElement>, info: any) => console.log(info?.source, value);
+  const onSearch = (
+    value: string,
+    _e: React.MouseEvent<HTMLElement>,
+    info: any
+  ) => console.log(info?.source, value);
 
   return (
     <div style={{ marginTop: "-1rem" }}>
@@ -29,13 +34,6 @@ const TaskBar: React.FC<{ tableRef: React.RefObject<any> }> = ({ tableRef }) => 
             padding: ".75rem",
           }}
         >
-          {/* <div>
-            <Search
-              placeholder="input search text"
-              onSearch={onSearch}
-              enterButton
-            />
-          </div> */}
           <Breadcrumb style={{ margin: "0px 0" }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -49,7 +47,7 @@ const TaskBar: React.FC<{ tableRef: React.RefObject<any> }> = ({ tableRef }) => 
               gap: "1rem",
             }}
           >
-            <ExportBtn tableRef={tableRef} />
+            <ExportBtn tableData={items} />
             <div className="flex gap-4">
               <InputModal modalOpen={modalOpen} />
             </div>

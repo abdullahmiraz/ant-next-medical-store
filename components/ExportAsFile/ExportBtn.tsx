@@ -1,54 +1,58 @@
-import React, { useRef } from "react";
+import React from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu, Space } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { findDOMNode } from "react-dom";
 import * as XLSX from "xlsx";
+import { Item } from "../MedicineList/MedicineList"; // Assuming Item interface is imported
 
 interface ExportBtnProps {
-  tableRef: React.MutableRefObject<any>;
+  tableData: Item[];
 }
 
-const ExportBtn: React.FC<ExportBtnProps> = ({ tableRef }) => {
+const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
   const handleExcelDownload = () => {
-    // eslint-disable-next-line react/no-find-dom-node
-    const node = findDOMNode(tableRef.current);
-    if (node) {
-      const tableElement = node.querySelector("table");
-      if (tableElement) {
-        const ws = XLSX.utils.table_to_sheet(tableElement);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-        XLSX.writeFile(wb, "tasks.xlsx");
-      }
+    if (tableData?.length > 0) {
+      const ws = XLSX.utils.json_to_sheet(tableData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Medicine List");
+      XLSX.writeFile(wb, "medicine_list.xlsx");
+    } else {
+      console.error("Table data is empty");
     }
   };
 
   const handlePdfDownload = () => {
-    if (tableRef.current && tableRef.current.querySelector("table")) {
+    if (tableData?.length > 0) {
       const doc = new jsPDF();
 
-      const table = tableRef.current.querySelector("table");
-      const columnsToSkip = table.querySelectorAll(
-        "th:last-child, td:last-child"
-      );
-
-      columnsToSkip.forEach((column) => (column.style.display = "none"));
+      // Prepare table rows as an array of arrays
+      const tableRows = tableData.map((item) => [
+        item.id,
+        item.name,
+        item.category,
+        item.type,
+        item.price,
+        item.stock,
+        item.manufacturer,
+        item.expiry_date,
+        item.batch_number,
+        item.aisle_location,
+        item.prescription_required ? "Yes" : "No",
+      ]);
 
       doc.autoTable({
-        html: table,
+        head: [["ID", "Name", "Category", "Type", "Price", "Stock", "Manufacturer", "Expiry Date", "Batch Number", "Aisle Location", "Prescription Required"]],
+        body: tableRows,
         startY: 10,
         styles: {
           overflow: "linebreak",
         },
       });
 
-      columnsToSkip.forEach((column) => (column.style.display = ""));
-
-      doc.save("tasks.pdf");
+      doc.save("medicine_list.pdf");
     } else {
-      console.error("Table content not found or empty");
+      console.error("Table data is empty");
     }
   };
 

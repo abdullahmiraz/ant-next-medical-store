@@ -1,11 +1,12 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Button, Input, Modal, Space, Table, message } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
 import { getInventoryDetails, updateProduct } from "../../api";
 import EditModal from "../EditModal/EditModal";
 import TaskBar from "../TaskBar/TaskBar";
+import ExportBtn from "../ExportAsFile/ExportBtn";
 
 export interface Item {
   id: any;
@@ -23,6 +24,7 @@ export interface Item {
 }
 
 const MedicineList: React.FC = () => {
+  const tableRef = useRef<HTMLDivElement>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [filteredItems, setFilteredItems] = useState<Item[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -139,14 +141,32 @@ const MedicineList: React.FC = () => {
 
     const columns: TableColumnsType<Item> = [
       {
-        title: "ID",
+        title: (
+          <div>
+            <div>ID</div>
+            <Input
+              placeholder="Search ID"
+              onChange={(e) => handleFilterChange("id", e.target.value)}
+              value={filters["id"] || ""}
+            />
+          </div>
+        ),
         dataIndex: "id",
         key: "id",
         fixed: "left", // Fixed to the left
         width: 50, // Set a fixed width for the ID column
       },
       {
-        title: "Name",
+        title: (
+          <div>
+            <div>Name</div>
+            <Input
+              placeholder="Search Name"
+              onChange={(e) => handleFilterChange("name", e.target.value)}
+              value={filters["name"] || ""}
+            />
+          </div>
+        ),
         dataIndex: "name",
         key: "name",
         fixed: "left", // Fixed to the left
@@ -203,35 +223,37 @@ const MedicineList: React.FC = () => {
 
   return (
     <div>
-      <TaskBar />
-      <Table
-        columns={generateColumns(items)}
-        dataSource={filteredItems} // Use the filtered data
-        rowKey={(record) => record.id}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: onSelectChange,
-        }}
-        onRow={(record: Item) => ({
-          onClick: () => {
-            if (selectedRows.includes(record.id)) {
-              setSelectedRows((prevSelectedRows) =>
-                prevSelectedRows.filter((rowId) => rowId !== record.id)
-              );
-            } else {
-              setSelectedRows((prevSelectedRows) => [
-                ...prevSelectedRows,
-                record.id,
-              ]);
-            }
-          },
-          style: {
-            background: selectedRows.includes(record.id) ? "lightblue" : "",
-          },
-        })}
-        scroll={{ x: "max-content", y: "max-content" }} // Adjust y value as needed
-      />
-
+      <TaskBar tableRef={tableRef} items={items} />
+      {/* <ExportBtn tableData={items} /> */}
+      <div ref={tableRef}>
+        <Table
+          columns={generateColumns(items)}
+          dataSource={filteredItems} // Use the filtered data
+          rowKey={(record) => record.id}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: onSelectChange,
+          // }}
+          onRow={(record: Item) => ({
+            onClick: () => {
+              if (selectedRows.includes(record.id)) {
+                setSelectedRows((prevSelectedRows) =>
+                  prevSelectedRows.filter((rowId) => rowId !== record.id)
+                );
+              } else {
+                setSelectedRows((prevSelectedRows) => [
+                  ...prevSelectedRows,
+                  record.id,
+                ]);
+              }
+            },
+            style: {
+              background: selectedRows.includes(record.id) ? "lightblue" : "",
+            },
+          })}
+          scroll={{ x: "max-content", y: "max-content" }} // Adjust y value as needed
+        />
+      </div>
       <Suspense fallback={<div>Loading...</div>}>
         {editItem && (
           <EditModal
