@@ -19,6 +19,7 @@ const MedicineList: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [printModalVisible, setPrintModalVisible] = useState(false);
   const [editItem, setEditItem] = useState<Item | null>(null);
 
   useEffect(() => {
@@ -38,6 +39,10 @@ const MedicineList: React.FC = () => {
   const handleEdit = (item: Item) => {
     setEditItem(item);
     setEditModalVisible(true);
+  };
+  const handlePrintModalView = (item: Item) => {
+    setEditItem(item);
+    setPrintModalVisible(!printModalVisible);
   };
 
   const handleSaveEdit = (updatedItem: Item) => {
@@ -186,7 +191,7 @@ const MedicineList: React.FC = () => {
             <Button
               type="link"
               icon={<EyeOutlined />}
-              onClick={() => handleEdit(record)}
+              onClick={() => handlePrintModalView(record)}
             />
             <Button
               type="link"
@@ -236,13 +241,13 @@ const MedicineList: React.FC = () => {
               visible={editModalVisible}
               item={editItem}
               onSave={saveEditedItem}
-              onCancel={() => setEditModalVisible(false)}
+              onCancel={() => setEditModalVisible(!editModalVisible)}
             />
             <ProductViewPrint
-              visible={editModalVisible}
+              visible={printModalVisible}
               item={editItem}
               onSave={saveEditedItem}
-              onCancel={() => setEditModalVisible(false)}
+              onCancel={() => setPrintModalVisible(!printModalVisible)}
             />
           </>
         )}

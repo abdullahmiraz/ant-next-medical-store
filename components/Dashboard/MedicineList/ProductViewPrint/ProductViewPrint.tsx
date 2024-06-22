@@ -27,7 +27,7 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
       body: tableData,
       startY: 20,
       theme: "grid", // Optional - "striped", "grid", "plain"
-      margin: { top: 10, left: 10, right: 10, bottom: 10 },
+      margin: { top: 10, left: 13, right: 13, bottom: 10 },
       styles: { overflow: "linebreak" },
       columnStyles: { 0: { fontStyle: "bold" } },
     });
@@ -53,9 +53,8 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
 
   return (
     <Modal
-      title="Edit Product"
       visible={visible}
-      onCancel={onCancel}
+      onCancel={onCancel} // Ensure onCancel is correctly bound to close the modal
       footer={
         <div className="flex justify-end mb-4">
           <Button type="primary" onClick={handlePrint}>
