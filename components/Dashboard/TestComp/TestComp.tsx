@@ -3,8 +3,9 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Button, Input, Modal, Space, Table, message } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
-import { getInventoryDetails, updateProduct } from "../../api";
+
 import EditModal from "../EditModal/EditModal";
+import { getInventoryDetails, updateProduct } from "../../../api";
 
 export interface Item {
   id: any;

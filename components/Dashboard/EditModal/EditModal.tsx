@@ -1,8 +1,8 @@
 import { Button, Form, Input, Modal, Switch, message } from "antd";
 import React, { useState } from "react";
-import { Item } from "../MedicineList/MedicineList";
 import { updateProduct } from "../../../api";
 import { EditModalProps } from "./EditModal.types";
+import "./EditModal.css";
 
 const EditModal: React.FC<EditModalProps> = ({
   visible,
@@ -34,7 +34,14 @@ const EditModal: React.FC<EditModalProps> = ({
 
   return (
     <Modal
-      title="Edit Product"
+      title={[
+        <div
+          className="text-center text-2xl font-bold  border-b-2  py-1 w-full"
+          key="edit"
+        >
+          Edit Product
+        </div>,
+      ]}
       visible={visible}
       onCancel={onCancel}
       footer={[
@@ -56,7 +63,7 @@ const EditModal: React.FC<EditModalProps> = ({
         initialValues={item}
         layout="vertical"
         onFinish={handleSave}
-        className="flex flex-wrap justify-between"
+        className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3"
       >
         <Form.Item
           name="name"

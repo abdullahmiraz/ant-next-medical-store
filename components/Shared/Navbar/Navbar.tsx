@@ -1,12 +1,27 @@
 "use client";
 import { UserOutlined } from "@ant-design/icons";
-import { Layout } from "antd";
+import { Layout, Dropdown, Menu } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 
 const { Header } = Layout;
 
 const Navbar: React.FC = () => {
+  const menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <Link href="/userprofile">
+          User Profile
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <Link href="/logout">
+          Logout
+        </Link>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <Header
       style={{
@@ -27,8 +42,11 @@ const Navbar: React.FC = () => {
           src="/brand.png"
           alt="brand"
         />
-      </Link> 
-      <Link href="/userprofile">
+      </Link>
+      <Dropdown
+        overlay={menu}
+        trigger={['hover']}
+      >
         <UserOutlined
           style={{
             color: "#fff",
@@ -38,7 +56,7 @@ const Navbar: React.FC = () => {
             cursor: "pointer",
           }}
         />
-      </Link>
+      </Dropdown>
     </Header>
   );
 };

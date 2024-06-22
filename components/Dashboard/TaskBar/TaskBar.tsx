@@ -3,19 +3,9 @@ import InputModal from "../InputModal/InputModal";
 import ExportBtn from "../ExportAsFile/ExportBtn";
 import React, { useState } from "react"; // Import React and useState
 
-const TaskBar: React.FC = ({ tableRef, items }) => {
+const TaskBar = ({ tableRef, items }) => {
   // Specify props type
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Initialize modalOpen state
-
-  const handleToggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
-
-  const onSearch = (
-    value: string,
-    _e: React.MouseEvent<HTMLElement>,
-    info: any
-  ) => console.log(info?.source, value);
 
   return (
     <div style={{ marginTop: "-1rem" }}>

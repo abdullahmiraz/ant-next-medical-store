@@ -2,10 +2,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Space, Upload } from "antd";
 import React, { createContext, FC, useContext, useMemo } from "react";
 
-interface MyFormItemProps {
-  name?: string | string[];
-}
-
 const MyFormItemContext = createContext<string[]>([]);
 
 function toArr(str: string | string[]): string[] {

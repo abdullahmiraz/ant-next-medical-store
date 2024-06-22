@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Button, Input, Modal, Space, Table, message } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import type { TableColumnsType } from "antd";
 
 import EditModal from "../EditModal/EditModal";
@@ -9,6 +9,7 @@ import TaskBar from "../TaskBar/TaskBar";
 import ExportBtn from "../ExportAsFile/ExportBtn";
 import { getInventoryDetails, updateProduct } from "../../../api";
 import { Item } from "./MedicineList.types";
+import ProductViewPrint from "./ProductViewPrint/ProductViewPrint";
 
 const MedicineList: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -34,14 +35,6 @@ const MedicineList: React.FC = () => {
     fetchData();
   }, []);
 
-  const onSelectChange = (
-    selectedRowKeys: React.Key[],
-    selectedRows: Item[]
-  ) => {
-    setSelectedRowKeys(selectedRowKeys);
-    setSelectedRows(selectedRows.map((row) => row.id));
-  };
-
   const handleEdit = (item: Item) => {
     setEditItem(item);
     setEditModalVisible(true);
@@ -60,11 +53,8 @@ const MedicineList: React.FC = () => {
     try {
       if (!editItem) return;
 
-      await updateProduct(editItem.id, editItem); // Assuming updateProduct is defined correctly
-
+      await updateProduct(editItem.id, editItem);
       message.success("Item updated successfully");
-
-      // Update local items state with edited item
       setItems((prevItems) =>
         prevItems.map((item) => (item.id === editItem.id ? editItem : item))
       );
@@ -84,8 +74,6 @@ const MedicineList: React.FC = () => {
       cancelText: "No",
       onOk: async () => {
         try {
-          // Call your API to delete the item
-          // await deleteItemById(id); // Implement this function
           const updatedItems = items.filter((item) => item.id !== id);
           setItems(updatedItems);
           message.success("Item deleted successfully");
@@ -197,6 +185,11 @@ const MedicineList: React.FC = () => {
             />
             <Button
               type="link"
+              icon={<EyeOutlined />}
+              onClick={() => handleEdit(record)}
+            />
+            <Button
+              type="link"
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record.id)}
             />
@@ -211,16 +204,11 @@ const MedicineList: React.FC = () => {
   return (
     <div>
       <TaskBar tableRef={tableRef} items={items} />
-      {/* <ExportBtn tableData={items} /> */}
       <div ref={tableRef}>
         <Table
           columns={generateColumns(items)}
           dataSource={filteredItems} // Use the filtered data
-          rowKey={(record) => record.id}
-          // rowSelection={{
-          //   selectedRowKeys,
-          //   onChange: onSelectChange,
-          // }}
+          rowKey={(record) => record.id} // rowSelection={{ selectedRowKeys,onChange: onSelectChange,}}
           onRow={(record: Item) => ({
             onClick: () => {
               if (selectedRows.includes(record.id)) {
@@ -243,12 +231,20 @@ const MedicineList: React.FC = () => {
       </div>
       <Suspense fallback={<div>Loading...</div>}>
         {editItem && (
-          <EditModal
-            visible={editModalVisible}
-            item={editItem}
-            onSave={saveEditedItem}
-            onCancel={() => setEditModalVisible(false)}
-          />
+          <>
+            <EditModal
+              visible={editModalVisible}
+              item={editItem}
+              onSave={saveEditedItem}
+              onCancel={() => setEditModalVisible(false)}
+            />
+            <ProductViewPrint
+              visible={editModalVisible}
+              item={editItem}
+              onSave={saveEditedItem}
+              onCancel={() => setEditModalVisible(false)}
+            />
+          </>
         )}
       </Suspense>
     </div>

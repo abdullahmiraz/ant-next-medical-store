@@ -3,13 +3,13 @@ import { useRef, useState } from "react";
 import TaskBar from "../TaskBar/TaskBar";
 import styled from "styled-components";
 
-const ExportAsFile = ({ columns, filteredItems }) => {
+const ExportAsFile = ({ columns, filteredItems, items }) => {
   const [selectedRowKey, setSelectedRowKey] = useState<string | null>(null);
   const tableRef = useRef<HTMLDivElement>(null);
 
   return (
     <div>
-      <TaskBar tableRef={tableRef} />
+      <TaskBar tableRef={tableRef} items={items} />
       <div ref={tableRef}>
         <Table
           columns={columns}

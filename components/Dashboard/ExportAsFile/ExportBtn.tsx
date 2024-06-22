@@ -1,6 +1,6 @@
 import React from "react";
 import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Space } from "antd";
+import { Button, Dropdown, Space } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -22,7 +22,6 @@ const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
     if (tableData?.length > 0) {
       const doc = new jsPDF();
 
-      // Prepare table rows as an array of arrays
       const tableRows = tableData.map((item) => [
         item.id,
         item.name,
@@ -66,29 +65,19 @@ const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
     }
   };
 
+  const menuItems = [
+    {
+      key: "1",
+      label: <div onClick={handleExcelDownload}>Export to Excel</div>,
+    },
+    {
+      key: "2",
+      label: <div onClick={handlePdfDownload}>Export to PDF</div>,
+    },
+  ];
+
   return (
-    <Dropdown
-      overlay={
-        <Menu>
-          <Menu.Item
-            key="1"
-            onClick={() => {
-              handleExcelDownload();
-            }}
-          >
-            Export to Excel
-          </Menu.Item>
-          <Menu.Item
-            key="2"
-            onClick={() => {
-              handlePdfDownload();
-            }}
-          >
-            Export to PDF
-          </Menu.Item>
-        </Menu>
-      }
-    >
+    <Dropdown menu={{ items: menuItems }}>
       <Button>
         <Space>
           Export

@@ -5,39 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { getAllSalesDetails } from "../../../api";
-
-interface Sale {
-  id: number;
-  customer: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-  };
-  order: {
-    orderId: string;
-    date: string;
-    total: number;
-    status: string;
-    items: { name: string }[];
-  };
-}
-
-interface SearchTextState {
-  id: string;
-  item: string;
-  customerName: string;
-  orderId: string;
-  orderDate: string;
-  totalAmount: string;
-  status: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  date: string;
-  total: string;
-}
+import { Sale, SearchTextState } from "./Sales.types";
 
 const SalesManagement: React.FC = () => {
   const [sales, setSales] = useState<Sale[]>([]);
