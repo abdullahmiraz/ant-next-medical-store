@@ -6,10 +6,19 @@ import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { ExportBtnProps } from "./ExportBtn.types";
 
-const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
+const ExportBtn: React.FC<ExportBtnProps> = ({ tableData, visibleColumns }) => {
   const handleExcelDownload = () => {
     if (tableData?.length > 0) {
-      const ws = XLSX.utils.json_to_sheet(tableData);
+      // Filter table data based on visible columns
+      const filteredData = tableData.map((item) => {
+        const filteredItem = {};
+        visibleColumns.forEach((column) => {
+          filteredItem[column] = item[column];
+        });
+        return filteredItem;
+      });
+
+      const ws = XLSX.utils.json_to_sheet(filteredData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Medicine List");
       XLSX.writeFile(wb, "medicine_list.xlsx");
@@ -22,36 +31,18 @@ const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
     if (tableData?.length > 0) {
       const doc = new jsPDF();
 
-      const tableRows = tableData.map((item) => [
-        item.id,
-        item.name,
-        item.category,
-        item.type,
-        item.price,
-        item.stock,
-        item.manufacturer,
-        item.expiry_date,
-        item.batch_number,
-        item.aisle_location,
-        item.prescription_required ? "Yes" : "No",
-      ]);
+      // Filter table data based on visible columns
+      const tableRows = tableData.map((item) => {
+        return visibleColumns?.map((column) => item[column]);
+      });
+
+      const tableHeaders = visibleColumns.map(
+        (column) =>
+          column.charAt(0).toUpperCase() + column.slice(1).replace(/_/g, " ")
+      );
 
       doc.autoTable({
-        head: [
-          [
-            "ID",
-            "Name",
-            "Category",
-            "Type",
-            "Price",
-            "Stock",
-            "Manufacturer",
-            "Expiry Date",
-            "Batch Number",
-            "Aisle Location",
-            "Prescription Required",
-          ],
-        ],
+        head: [tableHeaders],
         body: tableRows,
         startY: 10,
         styles: {

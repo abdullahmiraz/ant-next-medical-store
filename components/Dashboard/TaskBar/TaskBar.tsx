@@ -2,8 +2,9 @@ import { Breadcrumb, Button, Layout } from "antd";
 import InputModal from "../InputModal/InputModal";
 import ExportBtn from "../ExportAsFile/ExportBtn";
 import React, { useState } from "react"; // Import React and useState
+import DateRange from "./DateRange/DateRange";
 
-const TaskBar = ({ tableRef, items }) => {
+const TaskBar = ({ tableRef, filteredItems, visibleColumns }) => {
   // Specify props type
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Initialize modalOpen state
 
@@ -29,6 +30,10 @@ const TaskBar = ({ tableRef, items }) => {
             <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
+          <div className="flex gap-2">
+            <DateRange />
+            <Button type="primary">Search</Button>
+          </div>
           <div
             style={{
               display: "flex",
@@ -37,7 +42,10 @@ const TaskBar = ({ tableRef, items }) => {
               gap: "1rem",
             }}
           >
-            <ExportBtn tableData={items} />
+            <ExportBtn
+              tableData={filteredItems}
+              visibleColumns={visibleColumns}
+            />
             <div className="flex gap-4">
               <InputModal modalOpen={modalOpen} />
             </div>

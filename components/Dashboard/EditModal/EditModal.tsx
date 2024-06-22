@@ -34,6 +34,7 @@ const EditModal: React.FC<EditModalProps> = ({
 
   return (
     <Modal
+      width={800}
       title={[
         <div
           className="text-center text-2xl font-bold  border-b-2  py-1 w-full"
@@ -63,7 +64,7 @@ const EditModal: React.FC<EditModalProps> = ({
         initialValues={item}
         layout="vertical"
         onFinish={handleSave}
-        className="grid grid-cols-1  "
+        className="grid grid-cols-2 gap-2  "
       >
         <Form.Item
           name="name"

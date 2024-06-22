@@ -10,6 +10,7 @@ import ExportBtn from "../ExportAsFile/ExportBtn";
 import { getInventoryDetails, updateProduct } from "../../../api";
 import { Item } from "./MedicineList.types";
 import ProductViewPrint from "./ProductViewPrint/ProductViewPrint";
+import ColumnVisibilitySelector from "./ColumnVisibilitySelector";
 
 const MedicineList: React.FC = () => {
   const tableRef = useRef<HTMLDivElement>(null);
@@ -18,6 +19,7 @@ const MedicineList: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
+  const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [printModalVisible, setPrintModalVisible] = useState(false);
   const [editItem, setEditItem] = useState<Item | null>(null);
@@ -28,6 +30,13 @@ const MedicineList: React.FC = () => {
         const itemsData = await getInventoryDetails();
         setItems(itemsData.medicine);
         setFilteredItems(itemsData.medicine);
+        // Set default visible columns based on fetched data
+        if (itemsData.medicine.length > 0) {
+          const keys = Object.keys(itemsData.medicine[0]);
+          setVisibleColumns(
+            keys.filter((key) => !["id", "name", "image"].includes(key))
+          );
+        }
       } catch (error) {
         console.error("Error fetching medical items:", error);
       }
@@ -40,6 +49,7 @@ const MedicineList: React.FC = () => {
     setEditItem(item);
     setEditModalVisible(true);
   };
+
   const handlePrintModalView = (item: Item) => {
     setEditItem(item);
     setPrintModalVisible(!printModalVisible);
@@ -116,71 +126,43 @@ const MedicineList: React.FC = () => {
     setFilteredItems(filteredData);
   }, [filters, items]);
 
-  const generateColumns = (data: Item[]): TableColumnsType<Item> => {
-    if (!data || data.length === 0) return [];
+  const generateColumns = (): TableColumnsType<Item> => {
+    if (!filteredItems.length) return [];
 
     const columns: TableColumnsType<Item> = [
       {
-        title: (
-          <div>
-            <div>ID</div>
-            <Input
-              placeholder="Search ID"
-              onChange={(e) => handleFilterChange("id", e.target.value)}
-              value={filters["id"] || ""}
-            />
-          </div>
-        ),
+        title: "ID",
         dataIndex: "id",
         key: "id",
-        fixed: "left", // Fixed to the left
-        width: 50, // Set a fixed width for the ID column
+        fixed: "left",
+        width: 50,
       },
       {
-        title: (
-          <div>
-            <div>Name</div>
-            <Input
-              placeholder="Search Name"
-              onChange={(e) => handleFilterChange("name", e.target.value)}
-              value={filters["name"] || ""}
-            />
-          </div>
-        ),
+        title: "Name",
         dataIndex: "name",
         key: "name",
-        fixed: "left", // Fixed to the left
-        width: 150, // Set a fixed width for the Name column
+        fixed: "left",
+        width: 150,
         render: (text: string, record: Item) => <span>{text}</span>,
       },
-      ...Object.keys(data[0])
-        .filter((key) => key !== "id" && key !== "name" && key !== "image")
+      ...Object.keys(filteredItems[0])
+        .filter((key) => !["id", "name", "image"].includes(key))
         .map((key: string) => ({
-          title: (
-            <div>
-              <div>
-                {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " ")}
-              </div>
-              <Input
-                placeholder={`Search ${key}`}
-                onChange={(e) => handleFilterChange(key, e.target.value)}
-                value={filters[key] || ""}
-              />
-            </div>
-          ),
+          title: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, " "),
           dataIndex: key,
-          width: 150, // Set a fixed width for other columns
-          minWidth: 80, // Minimum width for other columns
           key,
+          width: 150,
           render: (text: string | number | boolean) =>
             typeof text === "boolean" ? (text ? "Yes" : "No") : text,
+          // Hide column if not in visibleColumns
+          hidden: !visibleColumns.includes(key),
         })),
       {
         title: "Actions",
         dataIndex: "actions",
         key: "actions",
-        fixed: "right", // Fixed to the right
-        width: 100, // Set a fixed width for the Actions column
+        fixed: "right",
+        width: 100,
         render: (_text: string, record: Item) => (
           <Space>
             <Button
@@ -208,12 +190,21 @@ const MedicineList: React.FC = () => {
 
   return (
     <div>
-      <TaskBar tableRef={tableRef} items={items} />
+      <TaskBar
+        tableRef={tableRef}
+        filteredItems={filteredItems}
+        visibleColumns={visibleColumns}
+      />
+      <ColumnVisibilitySelector
+        columns={Object.keys(filteredItems[0] || {}).slice(2, -1)} // Remove the last column from the checkbox options
+        visibleColumns={visibleColumns}
+        onChange={setVisibleColumns}
+      />
       <div ref={tableRef}>
         <Table
-          columns={generateColumns(items)}
-          dataSource={filteredItems} // Use the filtered data
-          rowKey={(record) => record.id} // rowSelection={{ selectedRowKeys,onChange: onSelectChange,}}
+          columns={generateColumns()}
+          dataSource={filteredItems}
+          rowKey={(record) => record.id}
           onRow={(record: Item) => ({
             onClick: () => {
               if (selectedRows.includes(record.id)) {
@@ -231,7 +222,7 @@ const MedicineList: React.FC = () => {
               background: selectedRows.includes(record.id) ? "lightblue" : "",
             },
           })}
-          scroll={{ x: "max-content", y: "max-content" }} // Adjust y value as needed
+          scroll={{ x: "max-content", y: "max-content" }}
         />
       </div>
       <Suspense fallback={<div>Loading...</div>}>

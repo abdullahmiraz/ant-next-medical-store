@@ -45,6 +45,7 @@ const InputModal = ({ modalOpen }) => {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         footer={null}
+        width={800} // Adjust the width here as needed
       >
         <TaskForm />
       </Modal>

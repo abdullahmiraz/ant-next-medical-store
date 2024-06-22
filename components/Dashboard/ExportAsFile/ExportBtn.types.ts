@@ -1,5 +1,6 @@
 import { Item } from "../MedicineList/MedicineList.types";
 
 export interface ExportBtnProps {
-  tableData: Item[];
+  tableData: any[];
+  visibleColumns: string[];
 }

@@ -38,16 +38,16 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
 
   const generateTableData = (item: any) => {
     return [
-      ["Name", item.name],
-      ["Category", item.category],
-      ["Type", item.type],
-      ["Price", `$${item.price}`],
-      ["Stock", item.stock],
-      ["Manufacturer", item.manufacturer],
-      ["Expiry Date", item.expiry_date],
-      ["Batch Number", item.batch_number],
-      ["Aisle Location", item.aisle_location],
-      ["Prescription Required", item.prescription_required ? "Yes" : "No"],
+      ["Name", item?.name],
+      ["Category", item?.category],
+      ["Type", item?.type],
+      ["Price", `$${item?.price}`],
+      ["Stock", item?.stock],
+      ["Manufacturer", item?.manufacturer],
+      ["Expiry Date", item?.expiry_date],
+      ["Batch Number", item?.batch_number],
+      ["Aisle Location", item?.aisle_location],
+      ["Prescription Required", item?.prescription_required ? "Yes" : "No"],
     ];
   };
 
@@ -72,46 +72,46 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
             <tbody>
               <tr className="border-b">
                 <td className="px-4 py-2 font-semibold">Name:</td>
-                <td className="px-4 py-2">{item.name}</td>
+                <td className="px-4 py-2">{item?.name}</td>
               </tr>
               <tr className="border-b bg-gray-50">
                 <td className="px-4 py-2 font-semibold">Category:</td>
-                <td className="px-4 py-2">{item.category}</td>
+                <td className="px-4 py-2">{item?.category}</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-2 font-semibold">Type:</td>
-                <td className="px-4 py-2">{item.type}</td>
+                <td className="px-4 py-2">{item?.type}</td>
               </tr>
               <tr className="border-b bg-gray-50">
                 <td className="px-4 py-2 font-semibold">Price:</td>
-                <td className="px-4 py-2">${item.price}</td>
+                <td className="px-4 py-2">${item?.price}</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-2 font-semibold">Stock:</td>
-                <td className="px-4 py-2">{item.stock}</td>
+                <td className="px-4 py-2">{item?.stock}</td>
               </tr>
               <tr className="border-b bg-gray-50">
                 <td className="px-4 py-2 font-semibold">Manufacturer:</td>
-                <td className="px-4 py-2">{item.manufacturer}</td>
+                <td className="px-4 py-2">{item?.manufacturer}</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-2 font-semibold">Expiry Date:</td>
-                <td className="px-4 py-2">{item.expiry_date}</td>
+                <td className="px-4 py-2">{item?.expiry_date}</td>
               </tr>
               <tr className="border-b bg-gray-50">
                 <td className="px-4 py-2 font-semibold">Batch Number:</td>
-                <td className="px-4 py-2">{item.batch_number}</td>
+                <td className="px-4 py-2">{item?.batch_number}</td>
               </tr>
               <tr className="border-b">
                 <td className="px-4 py-2 font-semibold">Aisle Location:</td>
-                <td className="px-4 py-2">{item.aisle_location}</td>
+                <td className="px-4 py-2">{item?.aisle_location}</td>
               </tr>
               <tr className="border-b bg-gray-50">
                 <td className="px-4 py-2 font-semibold">
                   Prescription Required:
                 </td>
                 <td className="px-4 py-2">
-                  {item.prescription_required ? "Yes" : "No"}
+                  {item?.prescription_required ? "Yes" : "No"}
                 </td>
               </tr>
             </tbody>

@@ -38,7 +38,7 @@ const TaskForm: FC = () => {
   return (
     <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
       <MyFormItemGroup prefix={undefined}>
-        <div className="grid  grid-cols-1">
+        <div className="grid  grid-cols-2 gap-2">
           <MyFormItem name="itemName" label="Item Name">
             <Input />
           </MyFormItem>
