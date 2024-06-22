@@ -1,6 +1,7 @@
 import { Button, Modal } from "antd";
 import React, { useRef } from "react";
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 import { EditModalProps } from "../../EditModal/EditModal.types";
 
 const ProductViewPrint: React.FC<EditModalProps> = ({
@@ -13,34 +14,46 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
   const handlePrint = () => {
     if (!componentRef.current) return;
 
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
+    const doc = new jsPDF("p", "mm", "a4");
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-    pdf.html(componentRef.current, {
-      callback: () => {
-        pdf.save("product_details.pdf");
-      },
-      x: 10,
-      y: 10,
-      html2canvas: {
-        scale: 0.43, // Adjust scale as needed to fit content within page
-        width: pageWidth,
-        height: pageHeight,
-      },
+    // Generate table data
+    const tableData = generateTableData(item);
+
+    // AutoTable configuration
+    doc.autoTable({
+      head: [["Attribute", "Value"]],
+      body: tableData,
+      startY: 20,
+      theme: "grid", // Optional - "striped", "grid", "plain"
+      margin: { top: 10, left: 10, right: 10, bottom: 10 },
+      styles: { overflow: "linebreak" },
+      columnStyles: { 0: { fontStyle: "bold" } },
     });
+
+    // Save the PDF
+    doc.save("product_details.pdf");
+  };
+
+  const generateTableData = (item: any) => {
+    return [
+      ["Name", item.name],
+      ["Category", item.category],
+      ["Type", item.type],
+      ["Price", `$${item.price}`],
+      ["Stock", item.stock],
+      ["Manufacturer", item.manufacturer],
+      ["Expiry Date", item.expiry_date],
+      ["Batch Number", item.batch_number],
+      ["Aisle Location", item.aisle_location],
+      ["Prescription Required", item.prescription_required ? "Yes" : "No"],
+    ];
   };
 
   return (
     <Modal
-      title={[
-        <div
-          className="text-center text-2xl font-bold  border-b-2  py-1 w-full"
-          key="edit"
-        >
-          Edit Product
-        </div>,
-      ]}
+      title="Edit Product"
       visible={visible}
       onCancel={onCancel}
       footer={
@@ -52,7 +65,7 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
       }
     >
       <div className="p-4">
-        <div ref={componentRef} className="border p-4 bg-white">
+        <div ref={componentRef}>
           <h2 className="text-center text-2xl font-bold mb-4">
             Product Details
           </h2>
