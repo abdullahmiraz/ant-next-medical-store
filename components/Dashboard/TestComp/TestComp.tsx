@@ -234,7 +234,7 @@ const TestComp: React.FC = () => {
       <Suspense fallback={<div>Loading...</div>}>
         {editItem && (
           <EditModal
-            visible={editModalVisible}
+            open={editModalVisible}
             item={editItem}
             onSave={saveEditedItem}
             onCancel={() => setEditModalVisible(false)}

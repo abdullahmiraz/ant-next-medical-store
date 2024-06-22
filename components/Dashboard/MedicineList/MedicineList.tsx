@@ -238,13 +238,13 @@ const MedicineList: React.FC = () => {
         {editItem && (
           <>
             <EditModal
-              visible={editModalVisible}
+              open={editModalVisible}
               item={editItem}
               onSave={saveEditedItem}
               onCancel={() => setEditModalVisible(!editModalVisible)}
             />
             <ProductViewPrint
-              visible={printModalVisible}
+              open={printModalVisible}
               item={editItem}
               onSave={saveEditedItem}
               onCancel={() => setPrintModalVisible(!printModalVisible)}

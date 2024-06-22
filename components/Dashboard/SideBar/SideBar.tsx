@@ -37,9 +37,9 @@ const SideBar = () => {
           </Menu.Item>
         </SubMenu>
 
-        <Menu.Item key="8" icon={<UserOutlined />}>
+        {/* <Menu.Item key="8" icon={<UserOutlined />}>
           <Link href="/dashboard/user-management">User Management</Link>
-        </Menu.Item>
+        </Menu.Item> */}
 
         <Menu.Item key="11" icon={<LaptopOutlined />}>
           <Link href="/dashboard/settings">Settings</Link>

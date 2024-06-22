@@ -5,7 +5,7 @@ import { EditModalProps } from "./EditModal.types";
 import "./EditModal.css";
 
 const EditModal: React.FC<EditModalProps> = ({
-  visible,
+  open,
   item,
   onSave,
   onCancel,
@@ -42,7 +42,7 @@ const EditModal: React.FC<EditModalProps> = ({
           Edit Product
         </div>,
       ]}
-      visible={visible}
+      open={open}
       onCancel={onCancel}
       footer={[
         <Button key="cancel" onClick={onCancel}>
@@ -63,7 +63,7 @@ const EditModal: React.FC<EditModalProps> = ({
         initialValues={item}
         layout="vertical"
         onFinish={handleSave}
-        className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3"
+        className="grid grid-cols-1  "
       >
         <Form.Item
           name="name"

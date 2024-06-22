@@ -5,7 +5,7 @@ import "jspdf-autotable";
 import { EditModalProps } from "../../EditModal/EditModal.types";
 
 const ProductViewPrint: React.FC<EditModalProps> = ({
-  visible,
+  open,
   item,
   onCancel,
 }) => {
@@ -53,7 +53,7 @@ const ProductViewPrint: React.FC<EditModalProps> = ({
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       onCancel={onCancel} // Ensure onCancel is correctly bound to close the modal
       footer={
         <div className="flex justify-end mb-4">

@@ -1,6 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Space, Upload } from "antd";
-import React, { createContext, FC, useContext, useMemo } from "react";
+import { FC, createContext, useContext, useMemo } from "react";
 
 const MyFormItemContext = createContext<string[]>([]);
 
@@ -37,8 +37,8 @@ const TaskForm: FC = () => {
 
   return (
     <Form name="form_item_path" layout="vertical" onFinish={onFinish}>
-      <MyFormItemGroup>
-        <div className="taskform-input-group flex flex-wrap justify-between">
+      <MyFormItemGroup prefix={undefined}>
+        <div className="grid  grid-cols-1">
           <MyFormItem name="itemName" label="Item Name">
             <Input />
           </MyFormItem>

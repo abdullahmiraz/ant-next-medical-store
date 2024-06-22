@@ -27,12 +27,19 @@ const InputModal = ({ modalOpen }) => {
     <>
       <Tooltip title="Add a new task">
         <Button type="primary" onClick={showModal}>
-           Add
+          Add
         </Button>
       </Tooltip>
       <Modal
         style={{ marginTop: "-2.2rem" }}
-        title="Add your task "
+        title={[
+          <div
+            className="text-center text-2xl font-bold  border-b-2  py-1 w-full"
+            key="edit"
+          >
+            Add Product
+          </div>,
+        ]}
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

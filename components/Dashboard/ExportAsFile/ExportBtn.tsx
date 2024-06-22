@@ -1,122 +1,91 @@
-import { Modal, Table } from "antd";
+import React from "react";
+import { DownOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Space } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import React, { useRef } from "react";
-import { EditModalProps } from "../EditModal/EditModal.types";
+import * as XLSX from "xlsx";
+import { ExportBtnProps } from "./ExportBtn.types";
 
-const ProductViewPrint: React.FC<EditModalProps> = ({
-  visible,
-  item,
-  onCancel,
-}) => {
-  const tableRef = useRef<Table<any>>(null);
-
-  const handlePdfDownload = () => {
-    if (!tableRef.current) return;
-
-    const doc = new jsPDF();
-
-    // Set initial y position for the table
-    let startY = 20;
-
-    // Prepare table data
-    const tableRows = [
-      ["Name", item.name],
-      ["Category", item.category],
-      ["Type", item.type],
-      ["Price", `$${item.price}`],
-      ["Stock", item.stock],
-      ["Manufacturer", item.manufacturer],
-      ["Expiry Date", item.expiry_date],
-      ["Batch Number", item.batch_number],
-      ["Aisle Location", item.aisle_location],
-      ["Prescription Required", item.prescription_required ? "Yes" : "No"],
-    ];
-
-    // Configure styles and options for the table
-    const tableStyles = { startY, styles: { overflow: "linebreak" } };
-    const tableColumns = [
-      { header: "Property", dataKey: 0 },
-      { header: "Value", dataKey: 1 },
-    ];
-
-    // Add the table to the PDF document
-    doc.autoTable(tableColumns, tableRows, tableStyles);
-
-    // Save the PDF
-    doc.save("product_details.pdf");
+const ExportBtn: React.FC<ExportBtnProps> = ({ tableData }) => {
+  const handleExcelDownload = () => {
+    if (tableData?.length > 0) {
+      const ws = XLSX.utils.json_to_sheet(tableData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Medicine List");
+      XLSX.writeFile(wb, "medicine_list.xlsx");
+    } else {
+      console.error("Table data is empty");
+    }
   };
 
+  const handlePdfDownload = () => {
+    if (tableData?.length > 0) {
+      const doc = new jsPDF();
+
+      const tableRows = tableData.map((item) => [
+        item.id,
+        item.name,
+        item.category,
+        item.type,
+        item.price,
+        item.stock,
+        item.manufacturer,
+        item.expiry_date,
+        item.batch_number,
+        item.aisle_location,
+        item.prescription_required ? "Yes" : "No",
+      ]);
+
+      doc.autoTable({
+        head: [
+          [
+            "ID",
+            "Name",
+            "Category",
+            "Type",
+            "Price",
+            "Stock",
+            "Manufacturer",
+            "Expiry Date",
+            "Batch Number",
+            "Aisle Location",
+            "Prescription Required",
+          ],
+        ],
+        body: tableRows,
+        startY: 10,
+        styles: {
+          overflow: "linebreak",
+        },
+      });
+
+      doc.save("medicine_list.pdf");
+    } else {
+      console.error("Table data is empty");
+    }
+  };
+
+  const menuItems = [
+    {
+      key: "1",
+      label: <div onClick={handleExcelDownload}>Export to Excel</div>,
+    },
+    {
+      key: "2",
+      label: <div onClick={handlePdfDownload}>Export to PDF</div>,
+    },
+  ];
+
   return (
-    <Modal
-      title={[
-        <div
-          className="text-center text-2xl font-bold border-b-2 py-1 w-full"
-          key="edit"
-        >
-          Edit Product
-        </div>,
-      ]}
-      visible={visible}
-      onCancel={onCancel}
-    >
-      <div className="p-4">
-        <div className="border p-4 bg-white">
-          <h2 className="text-center text-2xl font-bold mb-4">
-            Product Details
-          </h2>
-          <Table ref={tableRef} className="min-w-full bg-white border">
-            <tbody>
-              <tr className="border-b">
-                <td className="px-4 py-2 font-semibold">Name:</td>
-                <td className="px-4 py-2">{item?.name}</td>
-              </tr>
-              <tr className="border-b bg-gray-50">
-                <td className="px-4 py-2 font-semibold">Category:</td>
-                <td className="px-4 py-2">{item?.category}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-2 font-semibold">Type:</td>
-                <td className="px-4 py-2">{item?.type}</td>
-              </tr>
-              <tr className="border-b bg-gray-50">
-                <td className="px-4 py-2 font-semibold">Price:</td>
-                <td className="px-4 py-2">${item?.price}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-2 font-semibold">Stock:</td>
-                <td className="px-4 py-2">{item?.stock}</td>
-              </tr>
-              <tr className="border-b bg-gray-50">
-                <td className="px-4 py-2 font-semibold">Manufacturer:</td>
-                <td className="px-4 py-2">{item?.manufacturer}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-2 font-semibold">Expiry Date:</td>
-                <td className="px-4 py-2">{item?.expiry_date}</td>
-              </tr>
-              <tr className="border-b bg-gray-50">
-                <td className="px-4 py-2 font-semibold">Batch Number:</td>
-                <td className="px-4 py-2">{item?.batch_number}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="px-4 py-2 font-semibold">Aisle Location:</td>
-                <td className="px-4 py-2">{item?.aisle_location}</td>
-              </tr>
-              <tr className="border-b bg-gray-50">
-                <td className="px-4 py-2 font-semibold">
-                  Prescription Required:
-                </td>
-                <td className="px-4 py-2">
-                  {item?.prescription_required ? "Yes" : "No"}
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-      </div>
-    </Modal>
+    <Dropdown menu={{ items: menuItems }}>
+      <Button>
+        <Space>
+          Export
+          <DownOutlined />
+        </Space>
+      </Button>
+    </Dropdown>
   );
 };
 
-export default ProductViewPrint;
+export default ExportBtn;
