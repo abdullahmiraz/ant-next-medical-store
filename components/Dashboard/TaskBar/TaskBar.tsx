@@ -3,8 +3,14 @@ import InputModal from "../InputModal/InputModal";
 import ExportBtn from "../ExportAsFile/ExportBtn";
 import React, { useState } from "react"; // Import React and useState
 import DateRange from "./DateRange/DateRange";
+import ColumnVisibilitySelector from "../MedicineList/ColumnVisibilitySelector";
 
-const TaskBar = ({ tableRef, filteredItems, visibleColumns }) => {
+const TaskBar = ({
+  tableRef,
+  filteredItems,
+  visibleColumns,
+  setVisibleColumns,
+}) => {
   // Specify props type
   const [modalOpen, setModalOpen] = useState<boolean>(false); // Initialize modalOpen state
 
@@ -42,6 +48,11 @@ const TaskBar = ({ tableRef, filteredItems, visibleColumns }) => {
               gap: "1rem",
             }}
           >
+            <ColumnVisibilitySelector
+              columns={Object.keys(filteredItems[0] || {}).slice(2, -1)} // Remove the last column from the checkbox options
+              visibleColumns={visibleColumns}
+              onChange={setVisibleColumns}
+            />
             <ExportBtn
               tableData={filteredItems}
               visibleColumns={visibleColumns}

@@ -194,12 +194,9 @@ const MedicineList: React.FC = () => {
         tableRef={tableRef}
         filteredItems={filteredItems}
         visibleColumns={visibleColumns}
+        setVisibleColumns={setVisibleColumns}
       />
-      <ColumnVisibilitySelector
-        columns={Object.keys(filteredItems[0] || {}).slice(2, -1)} // Remove the last column from the checkbox options
-        visibleColumns={visibleColumns}
-        onChange={setVisibleColumns}
-      />
+
       <div ref={tableRef}>
         <Table
           columns={generateColumns()}

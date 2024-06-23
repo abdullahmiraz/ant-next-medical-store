@@ -1,6 +1,7 @@
 import React from "react";
-import { Checkbox } from "antd";
+import { Checkbox, Dropdown, Button, Space, Menu } from "antd";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
+import { DownOutlined } from "@ant-design/icons";
 
 interface ColumnVisibilitySelectorProps {
   columns: string[];
@@ -21,14 +22,23 @@ const ColumnVisibilitySelector: React.FC<ColumnVisibilitySelectorProps> = ({
     value: column,
   }));
 
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Checkbox.Group options={options} value={visibleColumns} onChange={onChange} />
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <div className="bg-slate-300 my-2 p-2 rounded-sm">
-      <Checkbox.Group
-        options={options}
-        value={visibleColumns}
-        onChange={onChange}
-      />
-    </div>
+    <Dropdown overlay={menu} trigger={['click']}>
+      <Button>
+        <Space>
+          Select Columns
+          <DownOutlined />
+        </Space>
+      </Button>
+    </Dropdown>
   );
 };
 
