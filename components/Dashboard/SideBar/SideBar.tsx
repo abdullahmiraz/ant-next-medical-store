@@ -28,11 +28,17 @@ const SideBar = () => {
         <Menu.Item key="2" icon={<LaptopOutlined />}>
           <Link href="/dashboard/inventory">Inventory</Link>
         </Menu.Item>
+        <Menu.Item key="3" icon={<LaptopOutlined />}>
+          <Link href="/dashboard/userreport">User Report</Link>
+        </Menu.Item>
+        <Menu.Item key="4" icon={<LaptopOutlined />}>
+          <Link href="/dashboard/salesreport">Sales Report</Link>
+        </Menu.Item>
         <SubMenu key="sub1" icon={<LaptopOutlined />} title="Sales">
           <Menu.Item key="5">
             <Link href="/dashboard/sales">Sales Report</Link>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="6">
             <Link href="/dashboard/reports"> Demo Report</Link>
           </Menu.Item>
         </SubMenu>
